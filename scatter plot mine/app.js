@@ -29,6 +29,7 @@ async function draw() {
     .attr('transform',
           `translate(${dimensions.margins.left}, ${dimensions.margins.top})`)
 
+
   dimensions.ctrWidth = dimensions.width - dimensions.margins.left - dimensions.margins.right
   dimensions.ctrHeight = dimensions.height - dimensions.margins.top - dimensions.margins.bottom 
   
@@ -50,12 +51,26 @@ async function draw() {
     .attr('cx', d => xScale(xAccessor(d)))
     .attr('cy', d => yScale(yAccessor(d)))
     .attr('r', 5)
-    .attr('fill', 'red')
-    .attr('stroke', 'grey')
+    .attr('fill', 'grey')
+    .attr('stroke', '#000')
     .attr('stroke-width', 2)
     // .attr('opacity', 50)
 
   // Axes
+  const xAxis = d3.axisBottom(xScale)
+    .ticks(5)
+
+  const xAxisGroup = ctr.append('g')
+    .call(xAxis)
+    .style('transform',
+          `translateY(${dimensions.ctrHeight}px)`
+          )
+  
+  const yAxis = d3.axisLeft(yScale)
+  
+  const yAxisGroup = ctr.append('g')
+    .call(yAxis)
+    
 }
 
 draw()
