@@ -24,11 +24,13 @@ async function draw() {
     .attr('height', dimensions.height)
     .attr('width', dimensions.width)
   
-    const ctr = svg
+  const ctr = svg
     .append('g')
     .attr('transform',
           `translate(${dimensions.margins.left}, ${dimensions.margins.top})`)
 
+  const tooltip = d3.select('#tooltip')
+  console.log(tooltip)
 
   dimensions.ctrWidth = dimensions.width - dimensions.margins.left - dimensions.margins.right
   dimensions.ctrHeight = dimensions.height - dimensions.margins.top - dimensions.margins.bottom 
@@ -54,7 +56,28 @@ async function draw() {
     .attr('fill', 'grey')
     .attr('stroke', '#000')
     .attr('stroke-width', 2)
-    // .attr('opacity', 50)
+    .on('mouseenter', function (event, datum) {
+      d3.select(this)
+        .attr('r', 10)
+        .attr('fill', 'orange')
+      
+      tooltip.style('display', 'block')
+        .style('top', yScale(yAccessor(datum)) - 25 + "px")
+        .style('left', xScale(xAccessor(datum)) + "px")
+
+      tooltip.select('.metric-humidity span')
+        .text(yAccessor(datum))
+      
+      tooltip.select('.metric-temperature span')
+        .text(xAccessor(datum))
+    })
+    .on('mouseleave', function(event, datum) {
+      d3.select(this)
+        .attr('r', 5)
+        .attr('fill', 'grey')
+
+      tooltip.style('display', 'none')
+    })
 
   // Axes
   const xAxis = d3.axisBottom(xScale)
