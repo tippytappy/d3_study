@@ -2,8 +2,12 @@ async function draw() {
 // DATA ===================================================================================
 const dataset = await d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
   function(d){
-    return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
-})
+    return {
+      date : d3.timeParse("%Y-%m-%d")(d.date), 
+      value : +d.value
+    }
+  }
+)
 
 const xAccessor = (d) => d.date
 const yAccessor = (d) => d.value
@@ -25,10 +29,8 @@ const svg = d3.select('#d3chart')
   .append('svg')
     .attr('width', dimensions.width)
     .attr('height', dimensions.height)
-
-const ctr = svg
-  .append('g')
-  .attr('transform', `translate(${dimensions.left}, ${dimensions.top})`)
+      .append('g')
+      .attr('transform', `translate(${dimensions.left}, ${dimensions.top})`)
 
 
 // SCALES =========================================================================================
@@ -41,7 +43,7 @@ const yScale = d3.scaleLinear()
   .range([dimensions.ctr_height, 0])
 
 // CHART ==========================================================================================
-ctr.append('path')
+svg.append('path')
   .datum(dataset)
   .attr("fill", "none")
   .attr("stroke", "steelblue")
@@ -52,11 +54,11 @@ ctr.append('path')
     )
 
 // AXES ===========================================================================================
-ctr.append('g')
+svg.append('g')
   .style('transform', `translateY(${dimensions.ctr_height}px)`)
   .call(d3.axisBottom(xScale))
 
-ctr.append('g')
+svg.append('g')
 .call(d3.axisLeft(yScale))
 
 }
