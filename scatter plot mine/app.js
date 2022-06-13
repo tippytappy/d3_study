@@ -1,15 +1,15 @@
 async function draw() {
-  // Data
+  // Data =========================================================================================
   const dataset = await d3.json('data.json')
 
   // Accessor functions
   const xAccessor = (d) => d.currently.humidity
   const yAccessor = (d) => d.currently.apparentTemperature
-
-  // Dimensions
+  
+  // Set up the svg and containers ================================================================
   let dimensions = {
-    width: 500,
-    height: 500,
+    width: 800,
+    height: 800,
     margins: {
       top: 50,
       bottom: 50,
@@ -18,7 +18,6 @@ async function draw() {
     }
   }
 
-  // Set up the svg and containers
   const svg = d3.select('#chart')
     .append('svg')
     .attr('height', dimensions.height)
@@ -30,12 +29,11 @@ async function draw() {
           `translate(${dimensions.margins.left}, ${dimensions.margins.top})`)
 
   const tooltip = d3.select('#tooltip')
-  console.log(tooltip)
-
+  
   dimensions.ctrWidth = dimensions.width - dimensions.margins.left - dimensions.margins.right
   dimensions.ctrHeight = dimensions.height - dimensions.margins.top - dimensions.margins.bottom 
   
-  // Scales
+  // Scales =======================================================================================
   const xScale = d3.scaleLinear()
     .domain(d3.extent(dataset, xAccessor))
     .range([0, dimensions.ctrWidth])
@@ -56,7 +54,7 @@ async function draw() {
     .attr('fill', 'grey')
     .attr('stroke', '#000')
     .attr('stroke-width', 2)
-    .on('mouseenter', function (event, datum) {
+    .on('mousedown', function (event, datum) {
       d3.select(this)
         .attr('r', 10)
         .attr('fill', 'orange')
@@ -65,13 +63,17 @@ async function draw() {
         .style('top', yScale(yAccessor(datum)) - 25 + "px")
         .style('left', xScale(xAccessor(datum)) + "px")
 
+      tooltip.select('.metric-date span')
+        // .text(dateAccessor(datum))
+        .text(datum.currently.time)
+
       tooltip.select('.metric-humidity span')
         .text(yAccessor(datum))
       
       tooltip.select('.metric-temperature span')
         .text(xAccessor(datum))
     })
-    .on('mouseleave', function(event, datum) {
+    .on('mouseup', function(event, datum) {
       d3.select(this)
         .attr('r', 5)
         .attr('fill', 'grey')
@@ -79,7 +81,7 @@ async function draw() {
       tooltip.style('display', 'none')
     })
 
-  // Axes
+  // Axes =========================================================================================
   const xAxis = d3.axisBottom(xScale)
     .ticks(5)
 

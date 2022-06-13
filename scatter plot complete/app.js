@@ -21,6 +21,8 @@ async function draw() {
   dimensions.ctrWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
   dimensions.ctrHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
 
+  console.log(dimensions)
+
   // Draw Image
   const svg = d3.select('#chart')
     .append('svg')
