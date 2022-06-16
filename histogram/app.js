@@ -35,6 +35,7 @@ async function draw() {
   const meanLine = ctr.append('line')
     .classed('mean-line', true)
 
+  // CHART FUNCTION THAT UPDATES WHEN THE DROPDOWN CHANGES ========================================
   function histogram(metric) {
     const xAccessor = d => d.currently[metric]
     const yAccessor = d => d.length
@@ -117,7 +118,7 @@ async function draw() {
     xAxisGroup.transition()
       .call(xAxis)
   }
-
+  // END OF THE CHART FUNCTION ====================================================================
   d3.select("#metric").on('change', function (e) {
     e.preventDefault()
 
