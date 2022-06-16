@@ -8,12 +8,23 @@
 </head>
 <body>
     <script src="https://d3js.org/d3.v6.js"></script>
+    <div id="dropdown">
+      <select id="metric">
+        <option value='value1' selected>Values 1</option>
+        <option value='value2'>Values 2</option>
+        <option value='parval1'>Partial values 1</option>
+        <option value='parval2'>Partial values 2</option>
+        <option value='parval3'>Partial values 3</option>
+      </select>
+    </div>
     <div id="d3_chart"></div>
+
+<!-- D3 SCRIPT =================================================================================-->
 
 <script>
     // PLOT AREA ==================================================================================
     const margin = {top: 30, right: 30, bottom: 30, left: 50},
-        width = 460 - margin.left - margin.right,
+        width = 800 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
     
     // append the svg object to the body of the page
@@ -25,12 +36,23 @@
         .attr("transform", `translate(${margin.left},${margin.top})`);
   
     // DATA =======================================================================================
-    d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv").then( function(data) {
-       
-        const val_accessor = (d) => d.value1
+    d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
+      function(data) {
+        return {
+          index: +data.index,
+          value1: +data.value1,
+          value2: +data.value2,
+          parval1: +data.parval1,
+          parval2: +data.parval2,
+          parval3: +data.parval3
+        }
+      }).then(function(data) {
+      const accessor = d => d[metric]
+    
+    function chart(metric) {
     // SCALES AND AXES ============================================================================
       // add the x Axis
-/*       const x = d3.scaleLinear()
+      const x = d3.scaleLinear()
                 .domain([0, 100])
                 .range([0, width]);
       svg.append("g")
@@ -39,19 +61,36 @@
     
       // add the y Axis
       const y = d3.scaleLinear()
-                .range([height, 0])
-                .domain([0, 100]);
+                .domain(d3.extent(data, accessor))
+                .range([height, 0]);
       svg.append("g")
-          .call(d3.axisLeft(y)); */
+          .call(d3.axisLeft(y));
     
       // PLOT =====================================================================================
-      const sel = svg.append("circle")
+      svg.append('circle')
+        .attr('cx', 10)
+        .attr('cy', 10)
+        .attr('r', 20)
+
+      svg.selectAll('circle')
           .data(data)
           .join('circle')
-          .attr('cx', (d) => +d.index)
-          .attr('cy', height / 2)
-          .attr('r', 10)
+          .attr('cx', d => x(d.index * 2))
+          .attr('cy', d => y(d.value1))
+          .attr('r', 5)
+      }
     });
+
+    d3.select("#dropdown").on('change', function (e) {
+    e.preventDefault()
+
+    chart(this.value)
+    
+    chart('value1')
+
+  })
+
+ 
 
   </script>
 </body>
