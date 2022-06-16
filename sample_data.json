@@ -1,338 +1,578 @@
 [
  {
    "index": 1,
-   "date": "01/01/2020",
+   "seqdate": "01/01/2020",
+   "groupdate": "01/01/2020",
    "group": "A",
-   "value1": 54,
-   "value2": 66
+   "value1": 48,
+   "value2": 51,
+   "value3": 11,
+   "parval1": 51,
+   "parval2": 37,
+   "parval3": 80
  },
  {
    "index": 2,
-   "date": "01/02/2020",
+   "seqdate": "01/02/2020",
+   "groupdate": "01/02/2020",
    "group": "A",
-   "value1": 64,
-   "value2": 70
+   "value1": 27,
+   "value2": 60,
+   "value3": 34,
+   "parval1": null,
+   "parval2": 71,
+   "parval3": null
  },
  {
    "index": 3,
-   "date": "01/03/2020",
+   "seqdate": "01/03/2020",
+   "groupdate": "01/03/2020",
    "group": "A",
-   "value1": 21,
-   "value2": 22
+   "value1": 72,
+   "value2": 66,
+   "value3": 14,
+   "parval1": 40,
+   "parval2": null,
+   "parval3": 14
  },
  {
    "index": 4,
-   "date": "01/04/2020",
+   "seqdate": "01/04/2020",
+   "groupdate": "01/04/2020",
    "group": "A",
-   "value1": 36,
-   "value2": 58
+   "value1": 32,
+   "value2": 54,
+   "value3": 71,
+   "parval1": null,
+   "parval2": 50,
+   "parval3": null
  },
  {
    "index": 5,
-   "date": "01/05/2020",
+   "seqdate": "01/05/2020",
+   "groupdate": "01/05/2020",
    "group": "A",
-   "value1": 37,
-   "value2": 44
+   "value1": 53,
+   "value2": 21,
+   "value3": 35,
+   "parval1": 57,
+   "parval2": null,
+   "parval3": 32
  },
  {
    "index": 6,
-   "date": "01/06/2020",
+   "seqdate": "01/06/2020",
+   "groupdate": "01/06/2020",
    "group": "A",
-   "value1": 31,
-   "value2": 73
+   "value1": 49,
+   "value2": 57,
+   "value3": 58,
+   "parval1": null,
+   "parval2": 59,
+   "parval3": 19
  },
  {
    "index": 7,
-   "date": "01/07/2020",
+   "seqdate": "01/07/2020",
+   "groupdate": "01/01/2020",
    "group": "B",
-   "value1": 44,
-   "value2": 49
+   "value1": 37,
+   "value2": 39,
+   "value3": 24,
+   "parval1": 57,
+   "parval2": 53,
+   "parval3": 23
  },
  {
    "index": 8,
-   "date": "01/08/2020",
+   "seqdate": "01/08/2020",
+   "groupdate": "01/02/2020",
    "group": "B",
-   "value1": 37,
-   "value2": 21
+   "value1": 70,
+   "value2": 46,
+   "value3": 29,
+   "parval1": null,
+   "parval2": 30,
+   "parval3": null
  },
  {
    "index": 9,
-   "date": "01/09/2020",
+   "seqdate": "01/09/2020",
+   "groupdate": "01/03/2020",
    "group": "B",
-   "value1": 51,
-   "value2": 63
+   "value1": 42,
+   "value2": 26,
+   "value3": 55,
+   "parval1": 56,
+   "parval2": null,
+   "parval3": 89
  },
  {
    "index": 10,
-   "date": "01/10/2020",
+   "seqdate": "01/10/2020",
+   "groupdate": "01/04/2020",
    "group": "B",
-   "value1": 74,
-   "value2": 52
+   "value1": 42,
+   "value2": 74,
+   "value3": 37,
+   "parval1": null,
+   "parval2": 54,
+   "parval3": null
  },
  {
    "index": 11,
-   "date": "01/11/2020",
+   "seqdate": "01/11/2020",
+   "groupdate": "01/05/2020",
    "group": "B",
-   "value1": 45,
-   "value2": 22
+   "value1": 59,
+   "value2": 35,
+   "value3": 49,
+   "parval1": 68,
+   "parval2": null,
+   "parval3": 82
  },
  {
    "index": 12,
-   "date": "01/12/2020",
+   "seqdate": "01/12/2020",
+   "groupdate": "01/06/2020",
    "group": "B",
-   "value1": 46,
-   "value2": 55
+   "value1": 25,
+   "value2": 55,
+   "value3": 58,
+   "parval1": null,
+   "parval2": 48,
+   "parval3": null
  },
  {
    "index": 13,
-   "date": "01/01/2021",
+   "seqdate": "01/01/2021",
+   "groupdate": "01/01/2020",
    "group": "C",
-   "value1": 24,
-   "value2": 72
+   "value1": 35,
+   "value2": 67,
+   "value3": 74,
+   "parval1": 31,
+   "parval2": 74,
+   "parval3": 25
  },
  {
    "index": 14,
-   "date": "01/02/2021",
+   "seqdate": "01/02/2021",
+   "groupdate": "01/02/2020",
    "group": "C",
-   "value1": 20,
-   "value2": 53
+   "value1": 61,
+   "value2": 23,
+   "value3": 79,
+   "parval1": null,
+   "parval2": 68,
+   "parval3": null
  },
  {
    "index": 15,
-   "date": "01/03/2021",
+   "seqdate": "01/03/2021",
+   "groupdate": "01/03/2020",
    "group": "C",
-   "value1": 58,
-   "value2": 33
+   "value1": 32,
+   "value2": 22,
+   "value3": 66,
+   "parval1": 75,
+   "parval2": null,
+   "parval3": 47
  },
  {
    "index": 16,
-   "date": "01/04/2021",
+   "seqdate": "01/04/2021",
+   "groupdate": "01/04/2020",
    "group": "C",
-   "value1": 23,
-   "value2": 78
+   "value1": 25,
+   "value2": 26,
+   "value3": 48,
+   "parval1": null,
+   "parval2": 76,
+   "parval3": 16
  },
  {
    "index": 17,
-   "date": "01/05/2021",
+   "seqdate": "01/05/2021",
+   "groupdate": "01/05/2020",
    "group": "C",
-   "value1": 61,
-   "value2": 65
+   "value1": 30,
+   "value2": 54,
+   "value3": 56,
+   "parval1": 46,
+   "parval2": null,
+   "parval3": 78
  },
  {
    "index": 18,
-   "date": "01/06/2021",
+   "seqdate": "01/06/2021",
+   "groupdate": "01/06/2020",
    "group": "C",
-   "value1": 32,
-   "value2": 47
+   "value1": 24,
+   "value2": 68,
+   "value3": 68,
+   "parval1": null,
+   "parval2": 33,
+   "parval3": null
  },
  {
    "index": 19,
-   "date": "01/07/2021",
+   "seqdate": "01/07/2021",
+   "groupdate": "01/01/2020",
    "group": "D",
-   "value1": 60,
-   "value2": 63
+   "value1": 52,
+   "value2": 74,
+   "value3": 31,
+   "parval1": 86,
+   "parval2": 65,
+   "parval3": 60
  },
  {
    "index": 20,
-   "date": "01/08/2021",
+   "seqdate": "01/08/2021",
+   "groupdate": "01/02/2020",
    "group": "D",
-   "value1": 68,
-   "value2": 59
+   "value1": 29,
+   "value2": 27,
+   "value3": 26,
+   "parval1": null,
+   "parval2": 51,
+   "parval3": 12
  },
  {
    "index": 21,
-   "date": "01/09/2021",
+   "seqdate": "01/09/2021",
+   "groupdate": "01/03/2020",
    "group": "D",
-   "value1": 60,
-   "value2": 50
+   "value1": 56,
+   "value2": 58,
+   "value3": 82,
+   "parval1": 85,
+   "parval2": null,
+   "parval3": 76
  },
  {
    "index": 22,
-   "date": "01/10/2021",
+   "seqdate": "01/10/2021",
+   "groupdate": "01/04/2020",
    "group": "D",
-   "value1": 37,
-   "value2": 67
+   "value1": 59,
+   "value2": 49,
+   "value3": 27,
+   "parval1": null,
+   "parval2": 76,
+   "parval3": null
  },
  {
    "index": 23,
-   "date": "01/11/2021",
+   "seqdate": "01/11/2021",
+   "groupdate": "01/05/2020",
    "group": "D",
-   "value1": 36,
-   "value2": 72
+   "value1": 62,
+   "value2": 73,
+   "value3": 27,
+   "parval1": 58,
+   "parval2": null,
+   "parval3": 38
  },
  {
    "index": 24,
-   "date": "01/12/2021",
+   "seqdate": "01/12/2021",
+   "groupdate": "01/06/2020",
    "group": "D",
-   "value1": 63,
-   "value2": 51
+   "value1": 28,
+   "value2": 38,
+   "value3": 26,
+   "parval1": null,
+   "parval2": 10,
+   "parval3": null
  },
  {
    "index": 25,
-   "date": "01/01/2022",
+   "seqdate": "01/01/2022",
+   "groupdate": "01/07/2020",
    "group": "A",
-   "value1": 57,
-   "value2": 79
+   "value1": 63,
+   "value2": 50,
+   "value3": 10,
+   "parval1": 44,
+   "parval2": 76,
+   "parval3": 28
  },
  {
    "index": 26,
-   "date": "01/02/2022",
+   "seqdate": "01/02/2022",
+   "groupdate": "01/08/2020",
    "group": "A",
-   "value1": 61,
-   "value2": 24
+   "value1": 67,
+   "value2": 80,
+   "value3": 44,
+   "parval1": null,
+   "parval2": 43,
+   "parval3": null
  },
  {
    "index": 27,
-   "date": "01/03/2022",
+   "seqdate": "01/03/2022",
+   "groupdate": "01/09/2020",
    "group": "A",
-   "value1": 60,
-   "value2": 67
+   "value1": 73,
+   "value2": 77,
+   "value3": 13,
+   "parval1": 22,
+   "parval2": null,
+   "parval3": 42
  },
  {
    "index": 28,
-   "date": "01/04/2022",
+   "seqdate": "01/04/2022",
+   "groupdate": "01/10/2020",
    "group": "A",
-   "value1": 30,
-   "value2": 32
+   "value1": 58,
+   "value2": 68,
+   "value3": 65,
+   "parval1": null,
+   "parval2": 65,
+   "parval3": 89
  },
  {
    "index": 29,
-   "date": "01/05/2022",
+   "seqdate": "01/05/2022",
+   "groupdate": "01/11/2020",
    "group": "A",
-   "value1": 36,
-   "value2": 71
+   "value1": 42,
+   "value2": 34,
+   "value3": 14,
+   "parval1": 68,
+   "parval2": 23,
+   "parval3": 40
  },
  {
    "index": 30,
-   "date": "01/06/2022",
+   "seqdate": "01/06/2022",
+   "groupdate": "01/12/2020",
    "group": "A",
-   "value1": 59,
-   "value2": 76
+   "value1": 56,
+   "value2": 28,
+   "value3": 54,
+   "parval1": null,
+   "parval2": 88,
+   "parval3": null
  },
  {
    "index": 31,
-   "date": "01/07/2022",
+   "seqdate": "01/07/2022",
+   "groupdate": "01/07/2020",
    "group": "B",
-   "value1": 76,
-   "value2": 78
+   "value1": 60,
+   "value2": 71,
+   "value3": 70,
+   "parval1": 77,
+   "parval2": null,
+   "parval3": 11
  },
  {
    "index": 32,
-   "date": "01/08/2022",
+   "seqdate": "01/08/2022",
+   "groupdate": "01/08/2020",
    "group": "B",
-   "value1": 21,
-   "value2": 78
+   "value1": 57,
+   "value2": 37,
+   "value3": 36,
+   "parval1": null,
+   "parval2": 65,
+   "parval3": null
  },
  {
    "index": 33,
-   "date": "01/09/2022",
+   "seqdate": "01/09/2022",
+   "groupdate": "01/09/2020",
    "group": "B",
-   "value1": 74,
-   "value2": 33
+   "value1": 53,
+   "value2": 35,
+   "value3": 37,
+   "parval1": 56,
+   "parval2": null,
+   "parval3": 18
  },
  {
    "index": 34,
-   "date": "01/10/2022",
+   "seqdate": "01/10/2022",
+   "groupdate": "01/10/2020",
    "group": "B",
-   "value1": 53,
-   "value2": 50
+   "value1": 23,
+   "value2": 38,
+   "value3": 15,
+   "parval1": null,
+   "parval2": 30,
+   "parval3": null
  },
  {
    "index": 35,
-   "date": "01/11/2022",
+   "seqdate": "01/11/2022",
+   "groupdate": "01/11/2020",
    "group": "B",
-   "value1": 60,
-   "value2": 53
+   "value1": 59,
+   "value2": 23,
+   "value3": 72,
+   "parval1": 40,
+   "parval2": null,
+   "parval3": 29
  },
  {
    "index": 36,
-   "date": "01/12/2022",
+   "seqdate": "01/12/2022",
+   "groupdate": "01/12/2020",
    "group": "B",
-   "value1": 39,
-   "value2": 29
+   "value1": 48,
+   "value2": 69,
+   "value3": 66,
+   "parval1": null,
+   "parval2": 39,
+   "parval3": null
  },
  {
    "index": 37,
-   "date": "01/01/2023",
+   "seqdate": "01/01/2023",
+   "groupdate": "01/07/2020",
    "group": "C",
-   "value1": 68,
-   "value2": 34
+   "value1": 32,
+   "value2": 57,
+   "value3": 89,
+   "parval1": 79,
+   "parval2": 23,
+   "parval3": 20
  },
  {
    "index": 38,
-   "date": "01/02/2023",
+   "seqdate": "01/02/2023",
+   "groupdate": "01/08/2020",
    "group": "C",
-   "value1": 36,
-   "value2": 43
+   "value1": 48,
+   "value2": 43,
+   "value3": 33,
+   "parval1": null,
+   "parval2": 41,
+   "parval3": null
  },
  {
    "index": 39,
-   "date": "01/03/2023",
+   "seqdate": "01/03/2023",
+   "groupdate": "01/09/2020",
    "group": "C",
-   "value1": 51,
-   "value2": 28
+   "value1": 45,
+   "value2": 40,
+   "value3": 59,
+   "parval1": 84,
+   "parval2": null,
+   "parval3": 49
  },
  {
    "index": 40,
-   "date": "01/04/2023",
+   "seqdate": "01/04/2023",
+   "groupdate": "01/10/2020",
    "group": "C",
-   "value1": 22,
-   "value2": 24
+   "value1": 20,
+   "value2": 25,
+   "value3": 72,
+   "parval1": null,
+   "parval2": 51,
+   "parval3": null
  },
  {
    "index": 41,
-   "date": "01/05/2023",
+   "seqdate": "01/05/2023",
+   "groupdate": "01/11/2020",
    "group": "C",
-   "value1": 73,
-   "value2": 21
+   "value1": 24,
+   "value2": 56,
+   "value3": 85,
+   "parval1": 32,
+   "parval2": 19,
+   "parval3": 50
  },
  {
    "index": 42,
-   "date": "01/06/2023",
+   "seqdate": "01/06/2023",
+   "groupdate": "01/12/2020",
    "group": "C",
-   "value1": 78,
-   "value2": 43
+   "value1": 30,
+   "value2": 27,
+   "value3": 83,
+   "parval1": null,
+   "parval2": 27,
+   "parval3": null
  },
  {
    "index": 43,
-   "date": "01/07/2023",
+   "seqdate": "01/07/2023",
+   "groupdate": "01/07/2020",
    "group": "D",
-   "value1": 43,
-   "value2": 40
+   "value1": 61,
+   "value2": 35,
+   "value3": 52,
+   "parval1": 40,
+   "parval2": null,
+   "parval3": 21
  },
  {
    "index": 44,
-   "date": "01/08/2023",
+   "seqdate": "01/08/2023",
+   "groupdate": "01/08/2020",
    "group": "D",
-   "value1": 32,
-   "value2": 55
+   "value1": 30,
+   "value2": 47,
+   "value3": 74,
+   "parval1": null,
+   "parval2": 29,
+   "parval3": null
  },
  {
    "index": 45,
-   "date": "01/09/2023",
+   "seqdate": "01/09/2023",
+   "groupdate": "01/09/2020",
    "group": "D",
-   "value1": 28,
-   "value2": 59
+   "value1": 65,
+   "value2": 58,
+   "value3": 78,
+   "parval1": 50,
+   "parval2": null,
+   "parval3": 82
  },
  {
    "index": 46,
-   "date": "01/10/2023",
+   "seqdate": "01/10/2023",
+   "groupdate": "01/10/2020",
    "group": "D",
-   "value1": 50,
-   "value2": 25
+   "value1": 43,
+   "value2": 57,
+   "value3": 16,
+   "parval1": null,
+   "parval2": 79,
+   "parval3": null
  },
  {
    "index": 47,
-   "date": "01/11/2023",
+   "seqdate": "01/11/2023",
+   "groupdate": "01/11/2020",
    "group": "D",
-   "value1": 31,
-   "value2": 66
+   "value1": 33,
+   "value2": 51,
+   "value3": 85,
+   "parval1": 42,
+   "parval2": 78,
+   "parval3": 12
  },
  {
    "index": 48,
-   "date": "01/12/2023",
+   "seqdate": "01/12/2023",
+   "groupdate": "01/12/2020",
    "group": "D",
-   "value1": 23,
-   "value2": 65
+   "value1": 40,
+   "value2": 79,
+   "value3": 58,
+   "parval1": null,
+   "parval2": 30,
+   "parval3": null
  }
 ]
