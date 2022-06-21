@@ -19,13 +19,12 @@
     </div>
     <div id="d3_chart"></div>
 
-<!-- D3 SCRIPT =================================================================================-->
-
+<!-- ================================== D3 SCRIPT ==============================================-->
 <script>
-    // PLOT AREA ==================================================================================
+    // ================================ PLOT AREA =================================================
     const margin = {top: 30, right: 30, bottom: 30, left: 50},
-        width = 800 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        width = 1000 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
     
     // append the svg object to the body of the page
     const svg = d3.select("#d3_chart")
@@ -34,8 +33,13 @@
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const xAxisGroup = svg.append("g")
+          .attr("transform", `translate(0, ${height})`)
+
+    const yAxisGroup = svg.append("g")
   
-    // DATA =======================================================================================
+    // ================================ DATA ======================================================
     d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
       function(data) {
         return {
@@ -48,52 +52,55 @@
         }
       }).then(function(data) {
     
-    // CHART UPDATE FUNCTION ======================================================================
+    // ================================ chart function start ======================================
+    // this function updates the chart when called by the listener
     function chart(metric) {
-      const yAccessor = d => d[metric]
+      const yAccessor = d => d[metric];
     
-    // SCALES AND AXES ============================================================================
       // add the x Axis
       const x = d3.scaleLinear()
-                .domain([0, 100])
-                .range([0, width]);
-      svg.append("g")
-          .attr("transform", `translate(0, ${height})`)
-          .call(d3.axisBottom(x));
+        .domain([0, 100])
+        .range([0, width]);
+      xAxisGroup.call(d3.axisBottom(x));
     
       // add the y Axis
       const y = d3.scaleLinear()
-                .domain(d3.extent(data, yAccessor))
-                .range([height, 0]);
-      svg.append("g")
-          .call(d3.axisLeft(y));
+        .domain(d3.extent(data, yAccessor))
+        .range([height, 0]);
+      yAxisGroup
+        .transition(2000)
+        .call(d3.axisLeft(y));
     
-      // PLOT =====================================================================================
-      svg.append('circle')
-        .attr('cx', 10)
-        .attr('cy', 10)
-        .attr('r', 20)
-
       svg.selectAll('circle')
-          .data(data)
-          .join('circle')
-          .transition()
-          .attr('cx', d => x(d.index * 2))
-          .attr('cy', d => y(yAccessor(d)))
-          .attr('r', 5)
+        .data(data)
+        .join( // take control of the enter selection transition
+          enter => enter
+            .append('circle')
+            .attr('cx', d => x(d.index * 2))
+            .attr('cy', d => y(yAccessor(d)))
+            .attr('r', 0)
+        )
+        .transition(d3.easePoly)  // d3 is handling the other transitions
+        .duration(1000)
+        .attr('cx', d => x(d.index * 2))
+        .attr('cy', d => y(yAccessor(d)))
+        .attr('r', 5);
+
       }
-      
+    // ================================ chart function end ======================================
+    
+  // listener
   d3.select("#dropdown").on('change', function (e) {
     e.preventDefault()
   
     chart(this.value)
-    console.log(this.value)
-  })
+  });
 
+  // run the chart for the first time
   chart('value1')
 
-    });
+  });
     
-  </script>
+</script>
 </body>
 </html>
