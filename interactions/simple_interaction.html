@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple interaction</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <script>
+    // data
+    async function draw() {
+      data = await d3.csv('https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv',
+        function(d) {
+          return {
+            value1: +d.value1,
+            value2: +d.value2
+          }
+        })
+      
+    const xAccessor = d => d.value1
+    const yAccessor = d => d.value2
+
+    plotSize = 600
+
+    // plot area
+    const svg = d3.select('body')
+        .append('svg')
+        .attr('width', plotSize)
+        .attr('height', plotSize)
+
+    // scales
+    const x = d3.scaleLinear()
+      .domain([0, 100])
+      .range([0, plotSize])
+
+    svg.append('g')
+      .attr('transform', `translate(0, ${plotSize})`)
+      .call(d3.axisTop(x))
+
+    const y = d3.scaleLinear()
+      .domain([0, 100])
+      .range([plotSize, 0])
+    
+    svg.append('g')
+    .call(d3.axisRight(y))
+
+    svg.selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', d => x(xAccessor(d)))
+      .attr('cy', d => y(yAccessor(d)))
+      .attr('r', 5)
+      .attr('fill', 'grey')
+      .on('mouseenter', function(event, datum) {
+        d3.select(this)
+          .attr('r', 10)
+          .attr('fill', 'orange')
+      })
+      .on('mouseleave', function(event, datum) {
+        d3.select(this)
+          .attr('r', 5)
+          .attr('fill', 'grey')
+      })
+      
+    }
+
+    draw()
+  </script>
+</body>
+</html>
