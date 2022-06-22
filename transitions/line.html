@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transition control</title>
+</head>
+<body>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <div id="dropdown-div">
+      <select id="dropdown">
+        <option value='value1' selected>Values 1</option>
+        <option value='value2'>Values 2</option>
+        <option value='parval1'>Partial values 1</option>
+        <option value='parval2'>Partial values 2</option>
+        <option value='parval3'>Partial values 3</option>
+      </select>
+    </div>
+    <div id="d3_chart"></div>
+
+<!-- D3 SCRIPT =================================================================================-->
+
+<script>
+    // PLOT AREA ==================================================================================
+    const margin = {top: 30, right: 30, bottom: 30, left: 50},
+        width = 800 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+    
+    // append the svg object to the body of the page
+    const svg = d3.select("#d3_chart")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+    // DATA =======================================================================================
+    d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
+      function(data) {
+        return {
+          index: +data.index,
+          value1: +data.value1,
+          value2: +data.value2,
+          parval1: +data.parval1,
+          parval2: +data.parval2,
+          parval3: +data.parval3
+        }
+      }).then(function(data) {
+    
+    // ================================ chart update function start ===============================
+    function chart(metric) {
+      const yAccessor = d => d[metric]
+    
+      // scales and axes 
+        // x scale and axis
+        const x = d3.scaleLinear()
+                  .domain([0, d3.max(data, (d, i) => i)])
+                  .range([0, width]);
+        svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(x));
+    
+      // y scale and axis
+      const y = d3.scaleLinear()
+                .domain(d3.extent(data, yAccessor))
+                .range([height, 0]);
+      svg.append("g")
+          .call(d3.axisLeft(y));
+    
+      // plot
+      svg.selectAll('path')
+          .datum(data)
+          .join(
+            enter => enter()
+            .attr('stroke', 'blue')
+            .attr('stroke-width', 3)
+            .attr('fill', 'none')
+            .attr('d', d3.line()
+            .x((d, i) => x(i))
+            .y(d => y(yAccessor(d))))
+          )
+          .attr('stroke', 'blue')
+          .attr('stroke-width', 3)
+          .attr('fill', 'none')
+          .attr('d', d3.line()
+            .x((d, i) => x(i))
+            .y(d => y(yAccessor(d))))
+      }
+    // ================================ chart update function end =================================
+
+  d3.select("#dropdown").on('change', function (e) {
+    e.preventDefault()
+  
+    chart(this.value)
+    console.log(this.value)
+  })
+
+  chart('value1')
+
+    });
+    
+  </script>
+</body>
+</html>
