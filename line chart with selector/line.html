@@ -33,7 +33,8 @@
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+        .attr("transform", `translate(${margin.left},${margin.top})`)
+        .attr('class', 'plot_group');
   
     // DATA =======================================================================================
     d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
@@ -47,40 +48,39 @@
           parval3: +data.parval3
         }
       }).then(function(data) {
+
+    // bring the scale and axis definition outside the update function
+    // create the scales and axes variables
+    const x = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.index)])
+      .range([0, width]);
     
+    svg.append("g")
+        .attr('class', 'xAxis')
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x))
+
+    const y = d3.scaleLinear()
+            .range([height, 0]);
+
+    const yAxisGroup = svg.append("g")
+        .attr('class', 'yAxis')
+
     // ================================ chart update function start ===============================
     function chart(metric) {
-      const yAccessor = d => d[metric]
+      const yAccessor = d => d[metric];
     
-      // scales and axes 
-        // x scale and axis
-        const x = d3.scaleLinear()
-                  .domain([0, d3.max(data, (d, i) => i)])
-                  .range([0, width]);
-        svg.append("g")
-            .attr("transform", `translate(0, ${height})`)
-            .call(d3.axisBottom(x));
-    
-      // y scale and axis
-      const y = d3.scaleLinear()
-                .domain(d3.extent(data, yAccessor))
-                .range([height, 0]);
-      svg.append("g")
-          .call(d3.axisLeft(y));
+      // update the scales and axes
+      y.domain(d3.extent(data, yAccessor));
+      svg.selectAll('.yAxis')
+      //  .transition()
+      //  .duration(1000)
+        .call(d3.axisLeft(y))
     
       // plot
-      svg.selectAll('path')
+      svg.append('path')
           .datum(data)
-          .join(
-            enter => enter
-            .append('path')
-              .attr('stroke', 'blue')
-              .attr('stroke-width', 3)
-              .attr('fill', 'none')
-              .attr('d', d3.line()
-              .x((d, i) => x(i))
-              .y(d => y(yAccessor(d))))
-          )
+          .join()
           .attr('stroke', 'orange')
           .attr('stroke-width', 3)
           .attr('fill', 'none')
