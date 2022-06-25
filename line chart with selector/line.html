@@ -20,14 +20,14 @@
     <div id="d3_chart"></div>
 
 <!-- D3 SCRIPT =================================================================================-->
-
 <script>
-    // PLOT AREA ==================================================================================
+    // ================================ doesn't update ============================================
+    // dimensions
     const margin = {top: 30, right: 30, bottom: 30, left: 50},
         width = 800 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
     
-    // append the svg object to the body of the page
+    // containers
     const svg = d3.select("#d3_chart")
       .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -36,8 +36,8 @@
         .attr("transform", `translate(${margin.left},${margin.top})`)
         .attr('class', 'plot_group');
   
-    // DATA =======================================================================================
-    d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
+    // data
+        d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
       function(data) {
         return {
           index: +data.index,
@@ -48,45 +48,46 @@
           parval3: +data.parval3
         }
       }).then(function(data) {
-
-    // bring the scale and axis definition outside the update function
-    // create the scales and axes variables
+    
+    // scales
     const x = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.index)])
       .range([0, width]);
-    
-    svg.append("g")
-        .attr('class', 'xAxis')
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x))
 
+    
     const y = d3.scaleLinear()
             .range([height, 0]);
 
     const yAxisGroup = svg.append("g")
         .attr('class', 'yAxis')
 
+    const linePath = svg.append('path')
+      .datum(data)
+
     // ================================ chart update function start ===============================
     function chart(metric) {
+      // data
       const yAccessor = d => d[metric];
     
-      // update the scales and axes
+      // y scale and axis
       y.domain(d3.extent(data, yAccessor));
       svg.selectAll('.yAxis')
-      //  .transition()
-      //  .duration(1000)
+        .transition()
+        .duration(500)
         .call(d3.axisLeft(y))
-    
-      // plot
-      svg.append('path')
-          .datum(data)
-          .join()
-          .attr('stroke', 'orange')
-          .attr('stroke-width', 3)
-          .attr('fill', 'none')
-          .attr('d', d3.line()
-            .x((d, i) => x(i))
-            .y(d => y(yAccessor(d))))
+
+      // line
+      linePath
+      .transition()
+      .duration(500)
+      .attr("d", d3.line()
+        .x(d => x(d.index))
+        .y(d => y(yAccessor(d)))
+        )
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+
       }
     // ================================ chart update function end =================================
 
@@ -101,6 +102,6 @@
 
     });
     
-  </script>
+</script>
 </body>
 </html>
