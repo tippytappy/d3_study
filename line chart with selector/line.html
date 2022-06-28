@@ -8,6 +8,8 @@
 </head>
 <body>
     <script src="https://d3js.org/d3.v6.js"></script>
+    <div style="font-family: sans-serif;">Goal: Create a line chart that lets users choose different series to display.</div>
+    <br>
     <div id="dropdown-div">
       <select id="dropdown">
         <option value='value1' selected>Values 1</option>
@@ -35,12 +37,16 @@
       .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`)
         .attr('class', 'plot_group');
+
+    const parseTime = d3.timeParse("%d/%m/%Y");
+    const formatTime = d3.timeFormat("%m/%y");
   
     // data
         d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
       function(data) {
         return {
           index: +data.index,
+          date: parseTime(data.seqdate),
           value1: +data.value1,
           value2: +data.value2,
           parval1: +data.parval1,
@@ -48,13 +54,19 @@
           parval3: +data.parval3
         }
       }).then(function(data) {
-    
-    // scales
-    const x = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.index)])
-      .range([0, width]);
+    console.log(data[0])
 
-    
+    // scales and axes
+    const x = d3.scaleTime()
+    .domain(d3.extent(data, d => d.date))
+    .range([0, width]);
+
+    svg.append('g')
+      .attr('class', 'xAxis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(x)
+        .tickFormat(formatTime))
+
     const y = d3.scaleLinear()
             .range([height, 0]);
 
@@ -81,7 +93,7 @@
       .transition()
       .duration(500)
       .attr("d", d3.line()
-        .x(d => x(d.index))
+        .x(d => x(d.date))
         .y(d => y(yAccessor(d)))
         )
       .attr("fill", "none")
