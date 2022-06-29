@@ -19,15 +19,15 @@
   <script>
     // data
     const data1 = [
-      {name: "Dylan", colour: "grey"}
+      {name: "Dylan", colour: "grey", position: 1}
     ]
     const data2 = [
-      {name: "Dylan", colour: "orange"},
-      {name: "Sienna", colour: "red"}
+      {name: "Dylan", colour: "orange", position: 1},
+      {name: "Sienna", colour: "red", position: 2}
     ]
     const data3 = [
-      {name: "Sienna", colour: "purple"},
-      {name: "Jas", colour: "blue"}
+      {name: "Sienna", colour: "purple", position: 2},
+      {name: "Jas", colour: "blue", position: 3}
     ]
     
 
@@ -42,17 +42,28 @@
         .attr('transform', 'translate(50, 0)')
 
     function update(data) {
+      console.log(data)
       svg.selectAll('circle')
       .data(data)
-      .join('circle')
-      .transition()
-      .attr('cx', (d, i) => i * 100)
-      .attr('cy', height / 2)
-      .attr('r', 20)
-      .attr('fill', 'orange')
+      .join(
+        enter => enter
+          .append('circle')
+          .attr('cx', d => d.position * 100)
+          .attr('cy', height / 2)
+          .attr('fill', d => d.colour)
+          .transition()
+          .attr('r', 20),
+        update => update
+          .transition(),
+        exit => exit
+          .transition()
+          .attr('r', 0)
+          .remove()
+
+      )
     }
 
-    update(data2)
+    update(data1)
 
   </script>
 </body>
