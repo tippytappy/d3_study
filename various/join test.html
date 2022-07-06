@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <style>
+     .hello {
+        background-colour: "blue";
+     }
+  </style>
+  <title>d3 join test</title>
+</head>
+
+<body>
+  <div class="hello">Div class hello</div>
+  <div>Another div</div>
+  <svg width="800" height = "400">
+    <g transform = "translate(50, 50)"></g>
+  </svg>
+
+  <script>
+    data = [22, 26, 14, 33, 10]
+    d3.select('g')
+      .selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', (d, i) => i * 50)
+      .attr('cy', 100)
+      .attr('r', 20)
+      .style('fill', 'orange')
+
+    // ternary operator
+    d3.selectAll('circle')
+      .attr('r', (d, i) => i < 3 ? 10 : 30)
+      //.filter((d, i) => i > 3)
+      //.style('fill', 'blue')
+      .on('mouseenter', function (e, d) {
+        d3.select(this)
+        .attr('r', 50)
+      })
+      .on('mouseleave', function (e, d) {
+        d3.selectAll('circle')
+        .attr('r', (d, i) => i < 3 ? 10 : 30)
+      })
+
+/* 
+    // each method -------------------------------------------
+    d3.selectAll('circle')
+    .each(function (d, i) {
+      d3.select(this)
+      .style('fill', i % 2 === 1 ? 'black' : 'green')
+    })
+
+    // call method -------------------------------------------
+    function size_it (selection) {
+      selection
+        .attr('r', 50)
+    }
+
+    d3.selectAll('circle')
+      .call(size_it)
+
+    // filter method
+    d3.selectAll('circle')
+      .filter((d, i) => i < 4)
+      .attr('r', 5)
+
+    d3.selectAll('circle')
+      .each(function (d, i) {
+        d3.select(this)
+        .attr('r', i * 10 + 1)
+      })
+
+    // why doesn't this work?
+    function purple_fill (selection) {
+      selection
+        .attr('r' 100)
+    }
+
+    d3.selectAll('circle')
+      .call(purple_fill)
+
+    // this isn't working either
+    d3.selectAll('circle')
+      .attr('cy', 100)
+      .attr('r', d => d)
+      .sort(function (a, b) {
+        return b - a;
+      })
+
+     */
+
+      
+
+  </script>
+</body>
+</html>
