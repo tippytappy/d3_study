@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date scale</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <div style="font-family: sans-serif">Use a date scale to position elements on the x axis</div>
+  <br>
+  <div id="chart"></div>
+
+  <script>  //===================================================================================== 
+    const plotArea = d3.select('#chart')
+      .append('svg')
+      .attr('width', 600)
+      .attr('height', 600)
+        .append('g')
+        .attr('tranform', 'translate(50, 20)')
+      
+    d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
+      d => {
+        return {
+          index: +d.index,
+          date: d3.timeParse('%d/%m/%Y')(d.seqdate),
+          value: +d.value1
+        }
+      }).then(function(data) {
+
+    const x = d3.scaleTime()
+      .domain(d3.extent(data, d => d.date))
+      .range([0, 600])
+
+    const y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.value))
+      .range([500, 0])
+      
+    plotArea
+      .selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', d => x(d.date))
+      .attr('cy', d => y(d.value))
+      .attr('r', 5)
+      })
+
+    plotArea
+      .append('g')
+      .attr('transform', 'translate(0, 100')
+      .call(d3.axisBottom(x))
+  </script>
+</body>
+</html>
