@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <div style="font-family: sans-serif">Use different scale methods to colour circle elements</div>
+  <div>Simple linear scale</div>
+  <div id="chart1"></div>
+  <div>Divering linear scale</div>
+  <div id="chart2"></div>
+  <div>Interpolated scale</div>
+  <div id="chart3"></div>
+
+  <script>
+    const data = [
+      {a: 0, b: -50},
+      {a: 10, b: -40},
+      {a: 20, b: -30},
+      {a: 30, b: -20},
+      {a: 40, b: -10},
+      {a: 50, b: 0},
+      {a: 60, b: 10},
+      {a: 70, b: 20},
+      {a: 80, b: 30},
+      {a: 90, b: 40},
+      {a: 100, b: 50}
+    ]
+
+    // simple linear colour scale =============================================
+    linearColour = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.a))
+      .range(['blue', 'orange'])
+
+    // make the plot area
+    const plotarea1 = d3.select('#chart1')
+      .append('svg')
+      .attr('width', 600)
+      .attr('height', 100)
+      .append('g')
+      .attr('transform', 'translate(50, 10)')
+    
+    // plot the data
+    plotarea1
+      .selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', (d, i) => i * 50)
+      .attr('cy', 25)
+      .attr('r', 20)
+      .style('fill' , d => linearColour(d.a))
+    
+    // diverging colour scale =================================================
+    divergingColour = d3.scaleLinear()
+    .domain([d3.min(data, d => d.b), 0, d3.max(data, d => d.b)])
+    .range(['blue', 'lightgrey', 'orange'])
+
+    // make the plot area
+    const plotarea2 = d3.select('#chart2')
+    .append('svg')
+    .attr('width', 600)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(50, 10)')
+      
+    plotarea2
+    .selectAll('circle')
+    .data(data)
+    .join('circle')
+    .attr('cx', (d, i) => i * 50)
+    .attr('cy', 25)
+    .attr('r', 20)
+    .style('fill' , d => divergingColour(d.b))
+
+    // sequential colour scale =================================================
+    sequentialColour = d3.scaleSequential()
+    .domain(d3.extent(data, d => d.a))
+    .interpolator(d3.interpolateRainbow)
+
+    // make the plot area
+    const plotarea3 = d3.select('#chart3')
+    .append('svg')
+    .attr('width', 600)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(50, 10)')
+      
+    plotarea3
+    .selectAll('circle')
+    .data(data)
+    .join('circle')
+    .attr('cx', (d, i) => i * 50)
+    .attr('cy', 25)
+    .attr('r', 20)
+    .style('fill' , d => sequentialColour(d.a))
+
+  </script>
+</body>
+</html>
