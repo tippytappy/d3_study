@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <style>
+     .hello {
+        background-colour: "blue";
+     }
+  </style>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="hello">Div class hello</div>
+  <div>Another div</div>
+  <svg width="800" height = "400">
+    <g transform = "translate(50, 50)">
+      <circle cx="100" cy="200" r="40"></circle>
+      <circle cx="200" cy="200" r="40"></circle>
+      <circle cx="300" cy="200" r="40"></circle>
+      <circle cx="400" cy="200" r="40"></circle>
+      <circle cx="500" cy="200" r="40"></circle>
+    </g>
+  </svg>
+
+  <script>
+    d3.selectAll('circle')
+      .attr('fill', 'orange')
+      .attr('cy', (d, i) => i * 20)
+      .on('mouseenter', function (e, d) {
+        d3.select(this)
+          .attr('fill', 'red')
+      })
+      .on('mouseleave', function (e, d) {
+        d3.select(this)
+          .attr('fill', 'orange')
+      })
+  </script>
+</body>
+</html>
