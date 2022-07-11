@@ -5,65 +5,71 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://d3js.org/d3.v6.js"></script>
-  <title>Simple transition test</title>
+  <title>Enter-exit-update</title>
 </head>
 <body>
   <div style="font-family: sans-serif">Goal: create a simple demonstration of the enter, exit and update transitions</div>
   <div class="buttons">
-    <button onclick="update(data1)">Dataset 1</button>
-    <button onclick="update(data2)">Dataset 2</button>
-    <button onclick="update(data3)">Dataset 3</button>
+    <button onclick="update(data1)">Daddy</button>
+    <button onclick="update(data2)">Daddy and Sienna</button>
+    <button onclick="update(data3)">Everyone</button>
   </div>
   <div id="chart"></div>
 
   <script>
     // data
     const data1 = [
-      {name: "Dylan", colour: "grey", position: 1}
+      {name: "Daddy", colour: "grey", id: 1}
     ]
     const data2 = [
-      {name: "Dylan", colour: "orange", position: 1},
-      {name: "Sienna", colour: "red", position: 2}
+      {name: "Daddy", colour: "orange", id: 1},
+      {name: "Sienna", colour: "pink  ", id: 2}
     ]
     const data3 = [
-      {name: "Sienna", colour: "purple", position: 2},
-      {name: "Jas", colour: "blue", position: 3}
+      {name: "Sienna", colour: "purple", id: 2},
+      {name: "Mummy", colour: "blue", id: 3},
+      {name: "Daddy", colour: "green", id: 1},
+      {name: "Nanna", colour: "lightgreen", id: 4},
+      {name: "Meerki", colour: "brown", id: 5}
     ]
     
 
     // plot area
     width = 600
     height = 200
-    const svg = d3.select('#chart')
+    const plotarea = d3.select('#chart')
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .append('g')
-        .attr('transform', 'translate(50, 0)')
+        .append('g')
+          .attr('transform', 'translate(50, 50)')
 
     function update(data) {
-      console.log(data)
-      svg.selectAll('circle')
-      .data(data)
-      .join(
-        enter => enter
-          .append('circle')
-          .attr('cx', d => d.position * 100)
-          .attr('cy', height / 2)
-          .attr('fill', d => d.colour)
-          .transition()
-          .attr('r', 20),
-        update => update
-          .transition(),
-        exit => exit
-          .transition()
-          .attr('r', 0)
-          .remove()
-
-      )
+      plotarea
+        .selectAll('circle')
+        .data(data, d => d.id)
+        .join(
+          enter => enter
+            .append('circle')
+            .attr('cx', d => d.id * 100)
+            .attr('cy', height /2)
+            .attr('r', 0),
+          update => update,
+          exit => exit
+            .transition()
+            .delay((d, i) => i * 100)
+            .duration(1000)
+            .attr('r', 0)
+            .remove()
+        )
+        .transition()
+        .duration(1000)
+        .attr('cx', d => d.id * 100)
+        .attr('cy', height / 2)
+        .attr('r', 40)
+        .style('fill', d => d.colour)
     }
 
-    update(data1)
 
   </script>
 </body>
