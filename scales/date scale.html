@@ -15,10 +15,20 @@
   <script>  //===================================================================================== 
     const plotArea = d3.select('#chart')
       .append('svg')
-      .attr('width', 600)
+      .attr('width', 1200)
       .attr('height', 600)
         .append('g')
-        .attr('tranform', 'translate(50, 20)')
+        .attr('transform', 'translate(50, 20)')
+
+    const x_ctr = plotArea
+    .append('g')
+      .classed('x_axis', true)
+      .attr('transform', 'translate(0, 500)')
+
+    const y_ctr = plotArea
+      .append('g')
+      .classed('y_axis', true)
+
       
     d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv",
       d => {
@@ -31,11 +41,16 @@
 
     const x = d3.scaleTime()
       .domain(d3.extent(data, d => d.date))
-      .range([0, 600])
+      .range([0, 1100])
+    x_ctr
+      .call(d3.axisBottom(x))
 
     const y = d3.scaleLinear()
-      .domain(d3.extent(data, d => d.value))
+      .domain([0, d3.max(data, d => d.value)])
       .range([500, 0])
+    y_ctr
+      .call(d3.axisLeft(y))
+
       
     plotArea
       .selectAll('circle')
@@ -46,10 +61,7 @@
       .attr('r', 5)
       })
 
-    plotArea
-      .append('g')
-      .attr('transform', 'translate(0, 100')
-      .call(d3.axisBottom(x))
+
   </script>
 </body>
 </html>
