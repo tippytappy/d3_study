@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple radial line chart</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <div style="font-family: sans-serif">Use different scale methods to colour circle elements</div>
+  <div>Simple line chart</div>
+  <div id="chart"></div>
+
+  <script>
+/*     const data = [
+      {a: 0, b: 32},
+      {a: 10, b: 40},
+      {a: 20, b: 30},
+      {a: 30, b: 52},
+      {a: 40, b: 43},
+      {a: 50, b: 60},
+      {a: 60, b: 49},
+      {a: 70, b: 38},
+      {a: 80, b: 31},
+      {a: 90, b: 40},
+      {a: 100, b: 50}
+    ] */
+
+    const data = d3.map(d3.range(200), d => Math.random())
+    console.log(data)
+
+    // make the plot area
+    const plotarea = d3.select('#chart')
+      .append('svg')
+      .attr('width', 600)
+      .attr('height', 600)
+      .append('g')
+      .attr('transform', 'translate(300, 300)')
+
+    // scales and axes
+    x = d3.scaleLinear()
+      .domain([0, d3.max(data, (d, i) => i)])
+      .range([0, Math.PI * 2])
+
+    y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d))
+      .range([200, 300])
+    
+    // plot the data
+    plotarea
+      .append('path')
+      .datum(data)
+      .attr('d', d3.lineRadial()
+        .angle((d, i) => x(i))
+        .radius(d => y(d))
+        .curve(d3.curveBasis)
+      )
+      .style('stroke', 'blue')
+      .style('stroke-width', 2)
+      .style('fill', 'none')
+  </script>
+</body>
+</html>
