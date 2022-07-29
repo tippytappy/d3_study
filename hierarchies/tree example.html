@@ -30,16 +30,14 @@
     ];
 
     let groups = d3.rollup(data,
-                function(d) { return d.length; },
-                function(d) { return d.Distributor; },
-                function(d) { return d.Genre; }
+                d => d.length,
+                d => d.Distributor,
+                d => d.Genre
                 );
 
     let root = d3.hierarchy(groups);
     console.log(root)
-    root.sum(function(d) {
-      return d[1];
-    });
+    root.sum(d => d[1]);
 
     let treeLayout = d3.tree()
       .size([700, 220])
@@ -51,10 +49,10 @@
       .selectAll('line')
       .data(root.links())
       .join('line')
-      .attr('x1', function(d) {return d.source.x;})
-      .attr('y1', function(d) {return d.source.y;})
-      .attr('x2', function(d) {return d.target.x;})
-      .attr('y2', function(d) {return d.target.y;})
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y)
       .style('stroke', 'blue');
 
     // Nodes
@@ -62,8 +60,8 @@
       .selectAll('circle')
       .data(root.descendants())
       .join('circle')
-      .attr('cx', function(d) {return d.x;})
-      .attr('cy', function(d) {return d.y;})
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .attr('r', 4);
 
     // Labels
@@ -72,11 +70,9 @@
       .data(root.descendants())
       .join('text')
       .classed('label', true)
-      .attr('x', function(d) {return d.x;})
-      .attr('y', function(d) {return d.y - 10;})
-      .text(function(d) {
-        return d.data[0];
-      });
+      .attr('x', d => d.x)
+      .attr('y', d => d.y - 10)
+      .text(d => d.data[0]);
 
     // Leaf count labels
     d3.select('svg g')
@@ -84,12 +80,9 @@
       .data(root.descendants())
       .join('text')
       .classed('count-label', true)
-      .attr('x', function(d) {return d.x;})
-      .attr('y', function(d) {return d.y + 20;})
-      .text(function(d) {
-        if (d.height > 0) return '';
-        return d.data[1];
-      });
+      .attr('x', d => d.x)
+      .attr('y', d => d.y + 20)
+      .text(d => d.height > 0? '' : d.data[1]);
   </script>
 </body>
 </html>
