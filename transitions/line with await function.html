@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line chart using await function</title>
+</head>
+<body>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <div>Goal: create a simple line chart using an await function within an html file instead of .then</div>
+    <div id="d3_chart"></div>
+
+  <script>
+    async function draw() {
+      // await part: after you get the data...
+      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", function(data) {
+        return {
+          index: +data.index,
+          value1: +data.value1,
+          value2: +data.value2,
+          parval1: +data.parval1,
+          parval2: +data.parval2,
+          parval3: +data.parval3
+        }
+      })
+      
+      // ...draw the chart
+      dims = {
+        'width': 600,
+        'height': 300,
+        'margin': 50
+      }
+
+      const plot_ctr = d3.select('#d3_chart')
+        .append('svg')
+        .attr('width', dims.width)
+        .attr('height', dims.height)
+          .append('g')
+          .attr('transform', `translate(${dims.margin}, ${dims.margin})`)
+
+      // scales
+      const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.index))
+        .range([0, dims.width - dims.margin * 2])
+
+      const y = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.value1))
+        .range([0, dims.height - dims.margin * 2])
+
+      // draw the chart
+      plot_ctr
+        .append('path')
+        .datum(data)
+        .attr('d', d3.line()
+          .x(d => x(d.index))
+          .y(d => y(d.value1)))
+        .attr('stroke', 'red')
+        .attr('fill', 'none')
+
+      // add the axes
+      const scale_height = dims.height - dims.margin * 2
+      console.log(scale_height)
+      plot_ctr
+        .append('g')
+        .style('transform', `translateY(${scale_height}px)`)
+        .call(d3.axisBottom(x))
+        
+        plot_ctr
+        .append('g')
+        .call(d3.axisLeft(y))
+
+    }
+    draw()
+  </script>
+</body>
+</html>
