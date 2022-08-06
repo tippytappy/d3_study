@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line chart with multiple series</title>
+</head>
+<body>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <div>Goal: create a simple multiple line chart from the downloaded sample data</div>
+    <div id="d3_chart"></div>
+
+  <script>
+
+    // plot container
+    dims = {
+      width: 600,
+      height: 300,
+      margin: 50
+    }
+
+    const plot_ctr = d3.select('#d3_chart')
+      .append('svg')
+      .attr('width', dims.width)
+      .attr('height', dims.height)
+        .append('g')
+        .attr('transform', `translate(${dims.margin}, ${dims.margin})`)
+
+    async function draw() {
+      // get the data...
+      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", function(data) {
+        return {
+          index: +data.index,
+          group: data.group,
+          value1: +data.value1,
+          value2: +data.value2,
+          parval1: +data.parval1,
+          parval2: +data.parval2,
+          parval3: +data.parval3
+        }
+      })
+
+      // create a grouped data set for plotting the charts
+      grouped_data = d3.group(data, d => d.group)
+      console.log(grouped_data)
+
+      // scales and axes
+      const xAxesTransformY = dims.height - dims.margin * 2
+      const x = d3.scaleLinear()
+        .domain([0, 11]) // find a way to get this from the internMap object
+        .range([0, dims.width - dims.margin])
+      plot_ctr
+        .append('g')
+        .attr('transform', `translate(0, ${xAxesTransformY})`)
+        .call(d3.axisBottom(x))
+
+      const y = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.value1))
+        .range([0, dims.height - dims.margin * 2])
+      plot_ctr
+        .append('g')
+        .call(d3.axisLeft(y))
+
+      // plot the lines
+      plot_ctr
+        .selectAll('.line')
+        .data(grouped_data)
+        .join('path')
+          .attr('d', function(d) {
+            return d3.line()
+              .x((d, i) => x(i))
+              .y(d => y(d.value1))
+              (d[1])
+          })
+          .attr('stroke', 'blue')
+          .attr('fill', 'none')
+
+    const test = {
+      andy: 10,
+      bob: 20,
+      carl: 30
+    }
+    console.log(test)
+
+    }
+      
+    draw()
+  </script>
+</body>
+</html>
