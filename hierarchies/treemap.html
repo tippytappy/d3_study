@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>D3 tree hierarchy</title>
+</head>
+<body>
+  <div>Goal: display hierarchical data in a treemap layout.</div>
+  <br>
+  <svg width="700" height="260">
+    <g transform="translate(0, 5)"></g>
+  </svg>
+  <script>
+    async function draw(){
+
+    // plot area set up
+    dims = {
+      width: 600, 
+      height: 300,
+      margin: 50
+    }
+    
+    // get the data
+    data = await d3.csv('https://raw.githubusercontent.com/tippytappy/d3_study/main/films.csv',
+      function (data) {
+        return {
+          title: data.Title,
+          distributor: data.Distributor,
+          genre: data.Genre,
+          gross: +data.Worldwide_Gross,
+          rating: +data.Rotten_Tomatoes_Rating
+        }
+      })
+      console.log(data)
+
+      // stratify the data
+      const root = d3.stratify()([
+  {id: "Chaos"},
+  {id: "Gaia", parentId: "Chaos"},
+  {id: "Eros", parentId: "Chaos"},
+  {id: "Erebus", parentId: "Chaos"},
+  {id: "Tartarus", parentId: "Chaos"},
+  {id: "Mountains", parentId: "Gaia"},
+  {id: "Pontus", parentId: "Gaia"},
+  {id: "Uranus", parentId: "Gaia"}
+])
+      console.log(root)
+
+
+    }
+
+    draw()
+  </script>
+</body>
+</html>

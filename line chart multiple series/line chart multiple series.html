@@ -29,7 +29,8 @@
 
     async function draw() {
       // get the data...
-      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", function(data) {
+      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", 
+      function(data) {
         return {
           index: +data.index,
           group: data.group,
@@ -62,6 +63,9 @@
         .append('g')
         .call(d3.axisLeft(y))
 
+      colourScale = d3.scaleOrdinal()
+        .range(['pink', 'blue', 'green', 'orange'])
+
       // plot the lines
       plot_ctr
         .selectAll('.line')
@@ -73,7 +77,7 @@
               .y(d => y(d.value1))
               (d[1])
           })
-          .attr('stroke', 'blue')
+          .attr('stroke', d => colourScale(d[0]))
           .attr('fill', 'none')
 
     const test = {
