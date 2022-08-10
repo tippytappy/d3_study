@@ -10,45 +10,64 @@
 <body>
   <div>Goal: display hierarchical data in a treemap layout.</div>
   <br>
-  <svg width="700" height="260">
-    <g transform="translate(0, 5)"></g>
-  </svg>
+  <div id="chart_div"></div>
   <script>
     async function draw(){
 
     // plot area set up
     dims = {
-      width: 600, 
-      height: 300,
+      width: 1200, 
+      height: 600,
       margin: 50
     }
+
+    const ctr = d3.select('#chart_div')
+      .append('svg')
+      .attr('width', dims.width)
+      .attr('height', dims.height)
+        .append('g')
+        .attr('transform', 'translate(50, 50)')
     
     // get the data
-    data = await d3.csv('https://raw.githubusercontent.com/tippytappy/d3_study/main/films.csv',
+    data = await d3.csv('https://raw.githubusercontent.com/tippytappy/d3_study/main/Africa.csv',
       function (data) {
         return {
-          title: data.Title,
-          distributor: data.Distributor,
-          genre: data.Genre,
-          gross: +data.Worldwide_Gross,
-          rating: +data.Rotten_Tomatoes_Rating
+          index: +data.Index,
+          country: data.Country,
+          region: data.Region,
+          population: +data.Population,
+          gdp: +data.GDP
         }
       })
-      console.log(data)
 
-      // stratify the data
-      const root = d3.stratify()([
-  {id: "Chaos"},
-  {id: "Gaia", parentId: "Chaos"},
-  {id: "Eros", parentId: "Chaos"},
-  {id: "Erebus", parentId: "Chaos"},
-  {id: "Tartarus", parentId: "Chaos"},
-  {id: "Mountains", parentId: "Gaia"},
-  {id: "Pontus", parentId: "Gaia"},
-  {id: "Uranus", parentId: "Gaia"}
-])
-      console.log(root)
+    // stratify the data to create the root object
+    const root = d3.stratify()
+      .id(d => d.country)
+      .parentId(d => d.region)
+      (data)
+    
+    // add summary stats to the root object
+    root.sum(d => d.population)
 
+    console.log(root)
+
+    // add coordinates to the root object
+    d3.treemap()
+      .size([dims.width, dims.height])
+      .padding(2)
+      (root)
+
+    // plot the chart
+    ctr
+      .selectAll('rect')
+      .data(root.leaves())
+      .join('rect')
+      .attr('x', d => d.x0)
+      .attr('y', d => d.y0)
+      .attr('width', d => d.x1 - d.x0)
+      .attr('height', d => d.y1 - d.y0)
+      .style('stroke', 'black')
+      .style('fill', 'blue')
 
     }
 
