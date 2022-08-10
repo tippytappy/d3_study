@@ -1,61 +1,61 @@
 Index,Country,ISO-3166 Code,Region,Population,GDP
-1,Algeria,DZ,Northern Africa,43851044,3627
-2,Angola,AO,Middle Africa,32866272,2900
-3,Benin,BJ,Western Africa,12123200,707
-4,Botswana,BW,Southern Africa,2351627,6625
-5,Burkina Faso,BF,Western Africa,20903273,559
-6,Burundi,BI,Eastern Africa,11890784,252
-7,Cameroon,CM,Middle Africa,26545863,1213
-8,Cape Verde,CV,Western Africa,555987,2909
-9,Central African Republic,CF,Middle Africa,4829767,363
-10,Chad,TD,Middle Africa,16425864,584
-11,Comoros,KM,Eastern Africa,869601,709
-12,Congo,CG,Middle Africa,5518087,1419
-13,Cote d'Ivoire,CI,Western Africa,26378274,1378
-14,Congo,CD,Middle Africa,89561403,395
-15,Djibouti,DJ,Eastern Africa,988000,1747
-16,Egypt,EG,Northern Africa,102334404,3251
-17,Equatorial Guinea,GQ,Middle Africa,1402985,7615
-18,Eritrea,ER,Eastern Africa,3546421,735
-19,Ethiopia,ET,Eastern Africa,114963588,629
-20,Gabon,GA,Middle Africa,2225734,6386
-21,Gambia,GM,Western Africa,2416668,399
-22,Ghana,GH,Western Africa,31072940,1373
-23,Guinea,GN,Western Africa,13132795,624
-24,Guinea-Bissau,GW,Western Africa,1968001,591
-25,Kenya,KE,Eastern Africa,53771296,1311
-26,Lesotho,LS,Southern Africa,2142249,1069
-27,Liberia,LR,Western Africa,5057681,415
-28,Libya,LY,Northern Africa,6871292,5049
-29,Madagascar,MG,Eastern Africa,27691018,361
-30,Malawi,MW,Eastern Africa,19129952,284
-31,Mali,ML,Western Africa,20250833,693
-32,Mauritania,MR,Western Africa,4649658,1019
-33,Mauritius,MU,Eastern Africa,1271768,9568
-35,Morocco,MA,Northern Africa,36910560,2806
-36,Mozambique,MZ,Eastern Africa,31255435,352
-37,Namibia,NA,Southern Africa,2540905,4308
-38,Niger,NE,Western Africa,24206644,311
-39,Nigeria,NG,Western Africa,206139589,1963
-41,Rwanda,RW,Eastern Africa,12952218,646
-43,Sao Tome and Principe,ST,Middle Africa,219159,1564
-44,Senegal,SN,Western Africa,16743927,876
-45,Seychelles,SC,Eastern Africa,98347,14513
-46,Sierra Leone,SL,Western Africa,7976983,468
-47,Somalia,SO,Eastern Africa,15893222,391
-48,South Africa,ZA,Southern Africa,59308690,4981
-49,South Sudan,SS,Northern Africa,11193725,805
-50,Sudan,SD,Northern Africa,43849260,2179
-51,Swaziland,SZ,Southern Africa,1160000,4
-52,Togo,TG,Western Africa,8278724,531
-53,Tunisia,TN,Northern Africa,11818619,3559
-54,Uganda,UG,Eastern Africa,45741007,526
-55,United Republic of Tanzania,TZ,Eastern Africa,59734218,792
-56,Zambia,ZM,Eastern Africa,18383955,1145
-57,Zimbabwe,ZW,Eastern Africa,14862924,1118
-58,Northern Africa,,Africa,256828904,21276
-59,Middle Africa,,Africa,179595134,22439
-60,Western Africa,,Africa,401855177,14816
-61,Southern Africa,,Africa,67503471,16987
-62,Eastern Africa,,Africa,433043754,35079
-63,Africa,,,2677652880,221194
+1,Africa,,,2677652880,221194
+2,Northern Africa,,Africa,256828904,21276
+3,Middle Africa,,Africa,179595134,22439
+4,Western Africa,,Africa,401855177,14816
+5,Southern Africa,,Africa,67503471,16987
+6,Eastern Africa,,Africa,433043754,35079
+7,Algeria,DZ,Northern Africa,43851044,3627
+8,Angola,AO,Middle Africa,32866272,2900
+9,Benin,BJ,Western Africa,12123200,707
+10,Botswana,BW,Southern Africa,2351627,6625
+11,Burkina Faso,BF,Western Africa,20903273,559
+12,Burundi,BI,Eastern Africa,11890784,252
+13,Cameroon,CM,Middle Africa,26545863,1213
+14,Cape Verde,CV,Western Africa,555987,2909
+15,Central African Republic,CF,Middle Africa,4829767,363
+16,Chad,TD,Middle Africa,16425864,584
+17,Comoros,KM,Eastern Africa,869601,709
+18,Congo,CG,Middle Africa,5518087,1419
+19,Cote d'Ivoire,CI,Western Africa,26378274,1378
+20,Congo,CD,Middle Africa,89561403,395
+21,Djibouti,DJ,Eastern Africa,988000,1747
+22,Egypt,EG,Northern Africa,102334404,3251
+23,Equatorial Guinea,GQ,Middle Africa,1402985,7615
+24,Eritrea,ER,Eastern Africa,3546421,735
+25,Ethiopia,ET,Eastern Africa,114963588,629
+26,Gabon,GA,Middle Africa,2225734,6386
+27,Gambia,GM,Western Africa,2416668,399
+28,Ghana,GH,Western Africa,31072940,1373
+29,Guinea,GN,Western Africa,13132795,624
+30,Guinea-Bissau,GW,Western Africa,1968001,591
+31,Kenya,KE,Eastern Africa,53771296,1311
+32,Lesotho,LS,Southern Africa,2142249,1069
+33,Liberia,LR,Western Africa,5057681,415
+35,Libya,LY,Northern Africa,6871292,5049
+36,Madagascar,MG,Eastern Africa,27691018,361
+37,Malawi,MW,Eastern Africa,19129952,284
+38,Mali,ML,Western Africa,20250833,693
+39,Mauritania,MR,Western Africa,4649658,1019
+41,Mauritius,MU,Eastern Africa,1271768,9568
+43,Morocco,MA,Northern Africa,36910560,2806
+44,Mozambique,MZ,Eastern Africa,31255435,352
+45,Namibia,NA,Southern Africa,2540905,4308
+46,Niger,NE,Western Africa,24206644,311
+47,Nigeria,NG,Western Africa,206139589,1963
+48,Rwanda,RW,Eastern Africa,12952218,646
+49,Sao Tome and Principe,ST,Middle Africa,219159,1564
+50,Senegal,SN,Western Africa,16743927,876
+51,Seychelles,SC,Eastern Africa,98347,14513
+52,Sierra Leone,SL,Western Africa,7976983,468
+53,Somalia,SO,Eastern Africa,15893222,391
+54,South Africa,ZA,Southern Africa,59308690,4981
+55,South Sudan,SS,Northern Africa,11193725,805
+56,Sudan,SD,Northern Africa,43849260,2179
+57,Swaziland,SZ,Southern Africa,1160000,4
+58,Togo,TG,Western Africa,8278724,531
+59,Tunisia,TN,Northern Africa,11818619,3559
+60,Uganda,UG,Eastern Africa,45741007,526
+61,United Republic of Tanzania,TZ,Eastern Africa,59734218,792
+62,Zambia,ZM,Eastern Africa,18383955,1145
+63,Zimbabwe,ZW,Eastern Africa,14862924,1118
