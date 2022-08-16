@@ -45,17 +45,24 @@
       .id(d => d.country)
       .parentId(d => d.region)
       (data)
+      
+
     
     // add summary stats to the root object
     root.sum(d => d.population)
 
-    console.log(root)
-
     // add coordinates to the root object
     d3.treemap()
+      .tile(d3.treemapBinary)
       .size([dims.width, dims.height])
       .padding(2)
       (root)
+
+    const regions = root.children.map(d => d.data.country)
+    console.log(regions)
+    colourScale = d3.scaleOrdinal()
+      .domain(regions)
+      .range(['red', 'blue', 'orange', 'green', 'pink'])
 
     // plot the chart
     ctr
@@ -67,7 +74,18 @@
       .attr('width', d => d.x1 - d.x0)
       .attr('height', d => d.y1 - d.y0)
       .style('stroke', 'black')
-      .style('fill', 'blue')
+      .style('fill', d => colourScale(d.data.region))
+
+    ctr
+      .selectAll('text')
+      .data(root.leaves())
+      .join('text')
+      .attr('x', d => d.x0 + 2)
+      .attr('y', d => d.y0 + 10)
+      .text(d => d.data.country)
+      .attr('font-size', 10)
+      .style('font-family', 'sans-serif')
+      .attr('fill', 'white')
 
     }
 
