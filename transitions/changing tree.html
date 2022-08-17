@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changing org chart</title>
+</head>
+<body>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <div style="font-family: sans-serif;">Goal: Create an org chart that can transition between two versions.</div>
+  <br>
+  <div id="dropdown-div">
+    <select id="dropdown">
+      <option value='parent_v1' selected>Version 1</option>
+      <option value='parent_v2'>Version 2</option>
+    </select>
+  </div>
+  <div id="d3_chart"></div>
+
+  <script>
+    // ================================ doesn't update ============================================
+    // dimensions
+    const margin = {top: 30, right: 30, bottom: 30, left: 50},
+        width = 800 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
+    
+    // containers
+    const ctr = d3.select("#d3_chart")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`)
+            .attr('class', 'plot_group');
+
+
+    // data
+   data = [
+    {node: "root", parent_v1: "", parent_v2: ""},
+    {node: "Andy", parent_v1: "root", parent_v2: "root"},
+    {node: "Bob", parent_v1: "root", parent_v2: "Andy"},
+    {node: "Claire", parent_v1: "Andy", parent_v2: "Andy"},
+    {node: "David", parent_v1: "Andy", parent_v2: "Andy"},
+    {node: "Elaine", parent_v1: "Bob", parent_v2: "Bob"},
+    {node: "Frances", parent_v1: "Andy", parent_v2: "Andy"}
+   ]
+
+  ///////////////////////////////////// UPDATING FUNCTION /////////////////////////////////////////
+  function tree(version) {
+
+    const versionAccessor = d => d[version]
+    const root = d3.stratify()
+      .id(d => d.node)
+      .parentId(versionAccessor)
+      (data)
+
+    
+    const layout = d3.tree()
+      .size([800, 600])
+      (root)
+
+    const duration = 1000
+
+    ctr.selectAll('line')
+      .data(root.links())
+      .join('line')
+      .transition()
+      .duration(duration)
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y)
+      .attr('stroke', 'grey')
+      .attr('stroke-width', 1)
+
+    ctr.selectAll('circle')
+      .data(root.descendants())
+      .join('circle')
+      .transition()
+      .duration(duration)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', 5)
+      .attr('fill', 'lightblue')
+      .attr('stroke', 'black')
+      .attr('stroke_width', 3)
+
+    console.log(root.descendants())
+
+    ctr.selectAll('text')
+      .data(root.descendants())
+      .join('text')
+      .text(d => d.id == 'root'? 'Jas' : d.id)
+      .transition()
+      .duration(duration)
+      .attr('x', d => d.x + 10)
+      .attr('y', d => d.y + 5)
+
+  }
+
+  // function works if it is only called once
+
+  d3.select('#dropdown')
+    .on('change', function (e) {
+      e.preventDefault()
+
+      tree(this.value)
+      console.log(this.value)
+    })
+
+tree('parent_v1')
+
+</script>
+</body>
+</html>
