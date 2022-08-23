@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>Changing bar charts</title>
+</head>
+<body>
+  <div style="font-family: sans-serif;">Goal: Display the same data as different bar charts.</div>
+  <br>
+  <div id="dropdown-div">
+    <select id="dropdown">
+      <option value='columns' selected>Column chart</option>
+      <option value='bars'>Bar chart</option>
+    </select>
+  </div>
+  <br>
+  <div id="d3_chart"></div>
+
+  <script>
+    // container
+    const margins = {all: 30, top: 30, right: 30, bottom: 30, left: 50}
+    width = 600
+    height = 600
+    
+    const ctr = d3.select("#d3_chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${margins.left},${margins.top})`)
+
+
+    async function draw() {
+      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", 
+        function(data) {
+          return {
+            index: +data.index,
+            group: data.group,
+            value1: +data.value1
+          }
+        }
+      )
+      
+      function cols () {
+        const x = d3.scaleBand()
+          .domain(d3.map(data, d => d.index))
+          .range([0, width - margins.all])
+          .padding(0.1)
+
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.value1)])
+          .range([height - margins.all, 0])
+
+        ctr.selectAll('rect')
+          .data(data)
+          .join('rect')
+          .transition()
+          .duration(1000)
+          .attr('x', d => x(d.index))
+          .attr('y', d => y(d.value1))
+          .attr('width', x.bandwidth)
+          .attr('height', d => height - y(d.value1))
+          .attr('fill', 'blue')
+        }
+
+        function bars () {
+        const y = d3.scaleBand()
+          .domain(d3.map(data, d => d.index))
+          .range([0, height - margins.all])
+          .padding(0.1)
+
+        const x = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.value1)])
+          .range([0, width - margins.all])
+
+        ctr.selectAll('rect')
+          .data(data)
+          .join('rect')
+          .transition()
+          .duration(1000)
+          .attr('y', d => y(d.index))
+          .attr('x', 0)
+          .attr('height', y.bandwidth)
+          .attr('width', d => 0 + x(d.value1))
+          .attr('fill', 'blue')
+        }
+
+      bars()
+
+      d3.select('#dropdown')
+      .on('change', function(e) {
+        this.value === 'bars'? bars() : cols()
+      })
+      }
+    draw()
+  </script>
+</body>
+</html>
