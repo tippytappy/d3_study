@@ -23,7 +23,7 @@
     // container
     const margins = {all: 30, top: 30, right: 30, bottom: 30, left: 50}
     width = 600
-    height = 600
+    height = 500
     
     const ctr = d3.select("#d3_chart")
       .append("svg")
@@ -44,6 +44,7 @@
         }
       )
       
+      /////////////////////////////////////// COLS //////////////////////////////////////////////
       function cols () {
         const x = d3.scaleBand()
           .domain(d3.map(data, d => d.index))
@@ -56,16 +57,29 @@
 
         ctr.selectAll('rect')
           .data(data)
-          .join('rect')
-          .transition()
-          .duration(1000)
-          .attr('x', d => x(d.index))
-          .attr('y', d => y(d.value1))
-          .attr('width', x.bandwidth)
-          .attr('height', d => height - y(d.value1))
-          .attr('fill', 'blue')
+          .join(
+            enter => enter
+              .append('rect')
+              .attr('x', d => x(d.index))
+              .attr('y', d => y(d.value1))
+              .attr('width', x.bandwidth)
+              .attr('height', d => height - y(d.value1)),
+            update => update
+            .call(update => update
+              .transition()
+              .attr('width', x.bandwidth)
+              .transition()
+              .duration(1000)
+              .attr('x', d => x(d.index))
+              .attr('y', d => y(d.value1))
+              .transition()
+              .attr('width', x.bandwidth)
+              .attr('height', d => height - y(d.value1))),
+            exit => exit.remove()
+          )
         }
 
+        /////////////////////////////////////// BARS //////////////////////////////////////////////
         function bars () {
         const y = d3.scaleBand()
           .domain(d3.map(data, d => d.index))
@@ -77,18 +91,17 @@
           .range([0, width - margins.all])
 
         ctr.selectAll('rect')
-          .data(data)
+          .data(data) 
           .join('rect')
           .transition()
-          .duration(1000)
-          .attr('y', d => y(d.index))
-          .attr('x', 0)
           .attr('height', y.bandwidth)
-          .attr('width', d => 0 + x(d.value1))
-          .attr('fill', 'blue')
+          .attr('x', 0)
+          .attr('y', d => y(d.index))
+          .transition()
+          .attr('width', d => x(d.value1))
         }
 
-      bars()
+      cols()
 
       d3.select('#dropdown')
       .on('change', function(e) {
