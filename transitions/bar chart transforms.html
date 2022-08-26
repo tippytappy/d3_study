@@ -12,8 +12,9 @@
   <br>
   <div id="dropdown-div">
     <select id="dropdown">
-      <option value='columns' selected>Column chart</option>
+      <option value='cols' selected>Column chart</option>
       <option value='bars'>Bar chart</option>
+      <option value='circular'>Circular chart</option>
     </select>
   </div>
   <br>
@@ -23,7 +24,7 @@
     // container
     const margins = {all: 30, top: 30, right: 30, bottom: 30, left: 50}
     width = 600
-    height = 500
+    height = 600
     
     const ctr = d3.select("#d3_chart")
       .append("svg")
@@ -74,38 +75,94 @@
               .attr('y', d => y(d.value1))
               .transition()
               .attr('width', x.bandwidth)
-              .attr('height', d => height - y(d.value1))),
+              .attr('height', d => height - y(d.value1)))
+              .attr('fill', 'black')
+              .attr('opacity', 100),
             exit => exit.remove()
           )
+          
         }
 
-        /////////////////////////////////////// BARS //////////////////////////////////////////////
-        function bars () {
-        const y = d3.scaleBand()
-          .domain(d3.map(data, d => d.index))
-          .range([0, height - margins.all])
-          .padding(0.1)
+      /////////////////////////////////////// BARS //////////////////////////////////////////////
+      function bars () {
+      const y = d3.scaleBand()
+        .domain(d3.map(data, d => d.index))
+        .range([0, height - margins.all])
+        .padding(0.1)
 
-        const x = d3.scaleLinear()
-          .domain([0, d3.max(data, d => d.value1)])
-          .range([0, width - margins.all])
+      const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value1)])
+        .range([0, width - margins.all])
 
+      ctr.selectAll('rect')
+        .data(data) 
+        .join('rect')
+        .transition()
+        .attr('height', y.bandwidth)
+        .attr('x', 0)
+        .attr('y', d => y(d.index))
+        .transition()
+        .duration(1000)
+        .attr('width', d => x(d.value1))
+        .attr('fill', 'black')
+        .attr('opacity', 100)
+      }
+      
+
+      ////////////////////////////////////// CIRCULAR ///////////////////////////////////////////
+      function circular() {
+        innerRadius = 200
+        outerRadius = 300
+
+        const x = d3.scaleBand()
+            .range([0, 2 * Math.PI])    // X axis goes from 0 to 2pi = all around the circle. If I stop at 1Pi, it will be around a half circle
+            .align(0)                  // This does nothing ?
+            .domain(data.map(d => d.index)); // The domain of the X axis is the list of states.
+
+        // Y scale
+        const y = d3.scaleRadial()
+            .range([innerRadius, outerRadius])   // Domain will be define later.
+            .domain([0, d3.max(data, d => d.value1)]); // Domain of Y is from 0 to the max seen in the data
+
+        // remove regular bars / cols
         ctr.selectAll('rect')
-          .data(data) 
-          .join('rect')
           .transition()
-          .attr('height', y.bandwidth)
-          .attr('x', 0)
-          .attr('y', d => y(d.index))
-          .transition()
-          .attr('width', d => x(d.value1))
-        }
+          .attr('opacity', 0)
+          //.remove()
 
-      cols()
+        // Add circular bars
+        ctr.selectAll("path")
+          .data(data)
+          .join("path")
+          .attr("fill", "#69b3a2")
+          .attr("d", d3.arc()     // imagine your doing a part of a donut plot
+          .innerRadius(innerRadius)
+          .outerRadius(innerRadius)
+          .startAngle(d => x(d.index))
+          .endAngle(d => x(d.index) + x.bandwidth())
+          .padAngle(0.01)
+          .padRadius(innerRadius))
+          //.transition()
+          .outerRadius(d => y(d.value1))
+      }
+
+      ////////////////////////////////////// END OF FUNCTIONS /////////////////////////////////////
+
+      cols()  // display something on loading
 
       d3.select('#dropdown')
       .on('change', function(e) {
-        this.value === 'bars'? bars() : cols()
+        switch (this.value) {
+          case 'bars':
+            bars();
+            break;
+          case 'cols':
+            cols();
+            break;
+          case 'circular':
+            circular();
+            break;
+        }
       })
       }
     draw()
