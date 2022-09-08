@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v3.js"></script>
+  <script src="superformula.js"></script>
+  <style>
+    .path {
+        stroke: rgb(96, 96, 193);
+        stroke-width: 2;
+        fill: #ddd;
+        opacity: 0.5;
+    }
+  </style>
+  <title>Superformula</title>
+</head>
+<body>
+  <div id="shapes"></div>
+  <script>
+    data = [
+        {index: 1, type: 'me1', x: 10, y: 20, m: 10, n: 10, b: 10, n1: 10, n2: 10, n3: 10},
+        {index: 2, type: 'me2', x: 20, y: 40, m: 20, n: 20, b: 20, n1: 20, n2: 20, n3: 20}
+    ]
+
+    width = 500
+    height = 500
+
+    const ctr = d3.select('#shapes')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+        
+    const shape = d3.superformula()
+    .type(d => d.type)
+    .size(10000)
+    .segments(3600)
+
+   const test = ctr.selectAll('path')
+    .data(data)
+    .enter()
+    .append('path')
+    //.attr('transform', `translate(${width / 2}, ${height / 2})`)
+    .attr('transform', d => 'translate(' + d.x * 10 + ',' + d.y * 10 +')')
+    .attr('d', shape)
+    .attr('class', 'path')
+    //.attr('opacity', 0.50)
+    console.log(test)
+  </script>
+</body>
+</html>
