@@ -22,8 +22,8 @@
 
   <script>
     // container
-    const margins = {all: 30, top: 30, right: 30, bottom: 30, left: 50}
-    width = 600
+    const margins = {all: 30, top: 0, right: 30, bottom: 30, left: 0}
+    width = 1000
     height = 600
     
     const ctr = d3.select("#d3_chart")
@@ -56,6 +56,11 @@
           .domain([0, d3.max(data, d => d.value1)])
           .range([height - margins.all, 0])
 
+        ctr.selectAll('path')
+          .transition()
+          .attr('opacity', 0)
+          .remove()
+
         ctr.selectAll('rect')
           .data(data)
           .join(
@@ -75,7 +80,8 @@
               .attr('y', d => y(d.value1))
               .transition()
               .attr('width', x.bandwidth)
-              .attr('height', d => height - y(d.value1)))
+              .attr('height', d => height - y(d.value1))
+              .attr('skewX', 30))
               .attr('fill', 'black')
               .attr('opacity', 100),
             exit => exit.remove()
@@ -94,25 +100,34 @@
         .domain([0, d3.max(data, d => d.value1)])
         .range([0, width - margins.all])
 
+      ctr.selectAll('path')
+        .transition()
+        .attr('transform', `translate(${width / 2}, ${height / 2}) scale(0)`)
+        .remove()
+
       ctr.selectAll('rect')
         .data(data) 
         .join('rect')
-        .transition()
         .attr('height', y.bandwidth)
         .attr('x', 0)
         .attr('y', d => y(d.index))
-        .transition()
-        .duration(1000)
         .attr('width', d => x(d.value1))
         .attr('fill', 'black')
         .attr('opacity', 100)
+        .on('mouseenter', function(event, datum) {
+            d3.select(this)
+              .attr('fill', 'red')
+          })
+          .on('mouseleave', function(event, datum) {
+            d3.select(this)
+             .attr('fill', 'black')
+          })
       }
       
-
       ////////////////////////////////////// CIRCULAR ///////////////////////////////////////////
       function circular() {
-        innerRadius = 200
-        outerRadius = 300
+        innerRadius = 100
+        outerRadius = 200
 
         const x = d3.scaleBand()
             .range([0, 2 * Math.PI])    // X axis goes from 0 to 2pi = all around the circle. If I stop at 1Pi, it will be around a half circle
@@ -125,30 +140,44 @@
             .domain([0, d3.max(data, d => d.value1)]); // Domain of Y is from 0 to the max seen in the data
 
         // remove regular bars / cols
-        ctr.selectAll('rect')
+        const test = ctr.selectAll('rect')
+          .data(data)
+          .join('rect')
           .transition()
-          .attr('opacity', 0)
-          //.remove()
+          .delay(d => d.index * 20)
+          .attr('height', 10)
+          .attr('width', 10)
+          .transition()
+          .attr('x', width / 2)
+          .attr('y', height /2)
+          .remove()
+
+        // define the circular bar path here to keep the next block neater
+        const arc = d3.arc()     // imagine you're doing a part of a donut plot
+          .innerRadius(innerRadius)
+          .outerRadius(d => y(d.value1))
+          .startAngle(d => x(d.index))
+          .endAngle(d => x(d.index) + x.bandwidth())
+          .padAngle(0.01)
+          .padRadius(innerRadius)
 
         // Add circular bars
         ctr.selectAll("path")
           .data(data)
           .join("path")
           .attr("fill", "#69b3a2")
-          .attr("d", d3.arc()     // imagine your doing a part of a donut plot
-          .innerRadius(innerRadius)
-          .outerRadius(innerRadius)
-          .startAngle(d => x(d.index))
-          .endAngle(d => x(d.index) + x.bandwidth())
-          .padAngle(0.01)
-          .padRadius(innerRadius))
-          //.transition()
-          .outerRadius(d => y(d.value1))
+          .attr('opacity', 0)
+          .attr("d", arc)
+          .attr('transform', `translate(${width / 2}, ${height / 2}) scale(0)`)
+          .transition()
+          .duration(1000)
+          .attr('transform', `translate(${width / 2}, ${height / 2}) scale(1)`)
+          .attr('opacity', 100)
       }
 
       ////////////////////////////////////// END OF FUNCTIONS /////////////////////////////////////
 
-      cols()  // display something on loading
+      bars()  // display something on loading
 
       d3.select('#dropdown')
       .on('change', function(e) {
