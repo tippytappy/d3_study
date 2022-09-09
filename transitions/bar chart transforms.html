@@ -57,33 +57,38 @@
           .range([height - margins.all, 0])
 
         ctr.selectAll('path')
-          .transition()
-          .attr('opacity', 0)
-          .remove()
+        .transition()
+        .duration(200)
+        .attr('transform', `translate(${width / 2}, ${height / 2}) scale(0)`)
+        .remove()
 
         ctr.selectAll('rect')
           .data(data)
           .join(
             enter => enter
-              .append('rect')
+            .append('rect')
               .attr('x', d => x(d.index))
-              .attr('y', d => y(d.value1))
-              .attr('width', x.bandwidth)
-              .attr('height', d => height - y(d.value1)),
-            update => update
-            .call(update => update
-              .transition()
-              .attr('width', x.bandwidth)
-              .transition()
-              .duration(1000)
-              .attr('x', d => x(d.index))
-              .attr('y', d => y(d.value1))
-              .transition()
+              .attr('y', height)
               .attr('width', x.bandwidth)
               .attr('height', d => height - y(d.value1))
-              .attr('skewX', 30))
-              .attr('fill', 'black')
-              .attr('opacity', 100),
+              .call(enter => enter
+                .transition()
+                .delay(200)
+                .attr('y', d => y(d.value1))
+              ),
+            update => update
+              .call(update => update
+                .transition()
+                .attr('width', x.bandwidth)
+                .transition()
+                .attr('x', d => x(d.index))
+                .attr('y', d => y(d.value1))
+                .transition()
+                .attr('width', x.bandwidth)
+                .attr('height', d => height - y(d.value1))
+                .attr('skewX', 30))
+                .attr('fill', 'black')
+                .attr('opacity', 100),
             exit => exit.remove()
           )
           
@@ -100,28 +105,41 @@
         .domain([0, d3.max(data, d => d.value1)])
         .range([0, width - margins.all])
 
-      ctr.selectAll('path')
+      // remove the circular bars
+        ctr.selectAll('path')
         .transition()
+        .duration(200)
         .attr('transform', `translate(${width / 2}, ${height / 2}) scale(0)`)
         .remove()
 
+      // draw the bars
       ctr.selectAll('rect')
         .data(data) 
-        .join('rect')
-        .attr('height', y.bandwidth)
-        .attr('x', 0)
-        .attr('y', d => y(d.index))
-        .attr('width', d => x(d.value1))
-        .attr('fill', 'black')
-        .attr('opacity', 100)
-        .on('mouseenter', function(event, datum) {
-            d3.select(this)
-              .attr('fill', 'red')
-          })
-          .on('mouseleave', function(event, datum) {
-            d3.select(this)
-             .attr('fill', 'black')
-          })
+        .join(
+          enter => enter
+          .append('rect')
+          .attr('height', y.bandwidth)
+          .attr('x', 0)
+          .attr('y', d => y(d.index))
+          .attr('fill', 'black')
+          .call(enter => enter
+            .transition()
+            .delay(200)
+            .attr('width', d => x(d.value1))),
+          update => update
+          .call(update => update
+            .transition()
+            .attr('height', 10)
+            .transition()
+            .attr('x', 0)
+            .attr('y', d => y(d.index))
+            .attr('fill', 'black')
+            .attr('width', 0)
+            .attr('height', y.bandwidth)
+            .transition()
+            .attr('width', d => x(d.value1))),
+          exit => exit.remove()
+        )
       }
       
       ////////////////////////////////////// CIRCULAR ///////////////////////////////////////////
@@ -144,7 +162,7 @@
           .data(data)
           .join('rect')
           .transition()
-          .delay(d => d.index * 20)
+          .delay(d => d.index * 10)
           .attr('height', 10)
           .attr('width', 10)
           .transition()
