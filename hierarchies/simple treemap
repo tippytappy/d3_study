@@ -29,16 +29,7 @@
         .attr('transform', 'translate(50, 50)')
     
     // get the data
-    data = await d3.csv('https://raw.githubusercontent.com/tippytappy/d3_study/main/Africa.csv',
-      function (data) {
-        return {
-          index: +data.Index,
-          country: data.Country,
-          region: data.Region,
-          population: +data.Population,
-          gdp: +data.GDP
-        }
-      })
+    data = await d3.csv([country, region])
 
     // stratify the data to create the root object
     const root = d3.stratify()
