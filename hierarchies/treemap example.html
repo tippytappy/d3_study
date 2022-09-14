@@ -34,6 +34,7 @@
         .id(d => d.name)   // Name of the entity (column name is name in csv)
         .parentId(d => d.parent)   // Name of the parent (column name is parent in csv)
         (data);
+      console.log(root)
       root.sum(d => +d.value)   // Compute the numeric value for each entity
     
       // Then d3.treemap computes the position of each element of the hierarchy

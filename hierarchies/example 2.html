@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>example 2</title>
+</head>
+<body>
+    <svg width='1800' height="1200"></svg>
+    <script>
+        // https://dev.to/hajarnasr/treemaps-with-d3-js-55p7
+        async function draw() {
+        data = await d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json')
+        const drawTreeMap = (dataset)=>{
+          const hierarchy = d3.hierarchy(dataset)
+                              .sum(d=>d.value)  //sums every child values
+                              .sort((a,b)=>b.value-a.value), // and sort them in descending order 
+            
+                  treemap = d3.treemap()
+                              .size([1800, 1200])
+                              .padding(1),
+      
+                  root = treemap(hierarchy);
+            
+          const categories = dataset.children.map(d=>d.name),      
+      
+                  colors = ['#1C1832', '#9E999D', '#F2259C', '#347EB4', 
+                              '#08ACB6', '#91BB91', '#BCD32F', '#75EDB8',
+                              "#89EE4B", '#AD4FE8', '#D5AB61', '#BC3B3A',
+                              '#F6A1F9', '#87ABBB', '#412433', '#56B870', 
+                              '#FDAB41', '#64624F'],
+      
+                  colorScale = d3.scaleOrdinal() // the scale function
+                              .domain(categories) // the data
+                              .range(colors);    // the way the data should be shown             
+      
+          const svg = d3.select("svg"); //make sure there's a svg element in your html file
+      
+                      svg.selectAll("rect")
+                      .data(root.leaves())
+                      .enter()
+                      .append("rect")
+                      .attr("x", d=>d.x0)
+                      .attr("y", d=>d.y0)
+                      .attr("width",  d=>d.x1 - d.x0)
+                      .attr("height", d=>d.y1 - d.y0)
+                      .attr("fill", d=>colorScale(d.data.category));
+
+                      svg.selectAll('text')
+                      .data(root.leaves())
+                      .join('text')
+                      .attr('x', d => d.x0 + 2)
+                      .attr('y', d => d.y0 + 20)
+                      .text(d => d.value)
+                      .attr('font-size', 20)
+                      .style('font-family', 'sans-serif')
+                      .attr('fill', 'white')
+        }
+        console.log(drawTreeMap)
+        drawTreeMap(data)
+        }
+        draw()
+    </script>
+</body>

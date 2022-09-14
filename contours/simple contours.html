@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>Contours</title>
+</head>
+<body>
+  <div style="font-family: sans-serif;">Goal: Display density contours for a scatter plot.</div>
+  <br>
+  <div id="d3_chart"></div>
+
+  <script>
+    // container
+    const margins = {all: 30, top: 30, right: 30, bottom: 30, left: 30}
+    width = 600
+    height = 600
+    
+    const ctr = d3.select("#d3_chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${margins.left},${margins.top})`)
+
+
+    async function draw() {
+      data = await d3.csv("https://raw.githubusercontent.com/tippytappy/d3_study/main/sample_data.csv", 
+        function(data) {
+          return {
+            index: +data.index,
+            group: data.group,
+            value1: +data.value1,
+            value2: +data.value2
+          }
+        }
+      )
+      
+    // scales and axes
+    const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.value1))
+        .range([0, width - margins.all * 2])
+    
+    ctr.append('g')
+      .attr('transform', `translate(0, ${height - margins.all * 2})`)
+      .call(d3.axisBottom(x))
+
+    const y = d3.scaleLinear()
+      .domain([d3.extent(data, d => d.value2)])
+      .range([height - margins.all * 2, 0])
+
+    ctr.append('g')
+      .attr('id', 'yAxisGroup')
+      .call(d3.axisLeft(y))
+
+    // contours
+    const contours = d3.contourDensity()
+      .x(d => x(d.value1))
+      .y(d => y(d.value2))
+      .size([width, height])
+      .bandwidth(30)
+      .thresholds(10)
+      (data)
+
+    ctr.append('g')
+    .attr('id', 'contours')
+    .selectAll('path')
+      .data(contours)
+      .join('path')
+      .attr('d', d3.geoPath())
+
+    // points
+    ctr.append('g')
+      .selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', d => x(d.value1))
+      .attr('cy', d => x(d.value2))
+      .attr('r', 5)
+    }
+
+    draw()
+  </script>
+</body>
+</html>
