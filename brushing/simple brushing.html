@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../d3-7.6.1.js"></script>
+  <title>Simple brushing</title>
+</head>
+
+<body>
+  
+  <svg width="500" height="500">
+    <g></g>
+  </svg>
+  <script>
+	let data = [], width = 600, height = 400, numPoints = 100;
+
+	//////////////////////////////////  DEFINE THE BRUSH  /////////////////////////////////////////
+	// 1. create a brush behaviour function
+	let brush = d3.brush()
+		.on('start brush', handleBrush);
+
+	let brushExtent;  // initiate the extent to be used by the event handler
+
+	// 2. create an event handler
+	function handleBrush(e) {
+		brushExtent = e.selection;
+		update();
+	}
+
+	// 3. make the function that will check whether a datum is in the brush bounding box
+	function isInBrushExtent(d) {
+		return brushExtent &&
+			d.x >= brushExtent[0][0] &&
+			d.x <= brushExtent[1][0] &&
+			d.y >= brushExtent[0][1] &&
+			d.y <= brushExtent[1][1];
+	}
+
+	// attach the brush behaviour to the svg inside a group to keep separate from the marks
+	function initBrush() {
+		d3.select('svg g')
+			.call(brush);
+	}
+	////////////////////////////////  END OF BRUSH DEFINITION  //////////////////////////////////// 
+	
+	function updateData() {
+		data = [];
+		for(let i=0; i<numPoints; i++) {
+			data.push({
+				id: i,
+				x: Math.random() * width,
+				y: Math.random() * height
+			});
+		}
+	}
+
+	function update() {
+		d3.select('svg')
+			.selectAll('circle')
+			.data(data)
+			.join('circle')
+			.attr('cx', function(d) { return d.x; })
+			.attr('cy', function(d) { return d.y; })
+			.attr('r', 4)
+			.style('fill', function(d) {
+				return isInBrushExtent(d) ? 'white' : null;
+			})
+			.style('stroke', d => isInBrushExtent(d)? 'blue': null)
+	}
+
+	initBrush();
+	updateData();
+	update();
+
+  </script>
+</body>
+</html>
