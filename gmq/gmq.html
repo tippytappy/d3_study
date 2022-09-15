@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>Gartner Magic Quadrant</title>
+</head>
+<body>
+ <div style="font-family: sans-serif">Use different scale methods to colour circle elements</div>
+  <br>
+  <svg width="600" height="600">
+
+  </svg>
+
+  <script>
+    async function draw(){
+
+        data = await d3.csv('gmq_data.csv', function(data){
+          return {
+            company: data.company,
+            year: +data.year,
+            cov: +data.cov,
+            a2e: +data.a2e,
+            change: data.change
+          }
+        })
+        
+        const ctr = d3.select('svg')
+          .append('g')
+          .attr('transform', 'translate(30, 30)')
+
+        const k = d3.map(data, d => d.company).keys()
+        console.log(k)
+
+        const x = d3.scaleLinear()
+          .domain([0, 100])
+          .range([0, 600 - 30])
+
+        const y = d3.scaleLinear()
+          .domain([0, 100])
+          .range([600 - 30, 0])
+
+
+        ctr.selectAll('circles')
+          .data(data)
+          .join('circle')
+          .filter(d => d.year == 2020)
+          .attr('cx', d => x(d.cov))
+          .attr('cy', d => y(d.a2e))
+          .attr('r', 3)
+    }
+    
+    draw()
+  </script>
+</body>
+</html>
