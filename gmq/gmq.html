@@ -4,12 +4,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://d3js.org/d3.v6.js"></script>
+  <script src='../d3.v6.js'></script>
   <title>Gartner Magic Quadrant</title>
 </head>
 <body>
  <div style="font-family: sans-serif">Use different scale methods to colour circle elements</div>
   <br>
+  <div id="dropdown-div">
+    <select id="dropdown">
+      <option value=2019>2019</option>
+      <option value=2020>2020</option>
+      <option value=2021>2021</option>
+    </select>
+  </div>
+  <br>
+  
   <svg width="600" height="600">
 
   </svg>
@@ -17,22 +26,25 @@
   <script>
     async function draw(){
 
-        data = await d3.csv('gmq_data.csv', function(data){
+        data = await d3.csv('gmq_data_wide.csv', function(data){
           return {
             company: data.company,
-            year: +data.year,
-            cov: +data.cov,
-            a2e: +data.a2e,
-            change: data.change
+            cov_2019: +data.cov_2019,
+            a2e_2019: +data.a2e_2019,
+            cov_2020: +data.cov_2020,
+            a2e_2020: +data.a2e_2020,
+            cov_2021: +data.cov_2021,
+            a2e_2021: +data.a2e_2021
           }
         })
+
+        console.log(data)
         
         const ctr = d3.select('svg')
           .append('g')
           .attr('transform', 'translate(30, 30)')
 
         const k = d3.map(data, d => d.company).keys()
-        console.log(k)
 
         const x = d3.scaleLinear()
           .domain([0, 100])
@@ -42,14 +54,24 @@
           .domain([0, 100])
           .range([600 - 30, 0])
 
-
+        function update(yr) {
         ctr.selectAll('circles')
-          .data(data)
+          .data(data, d => d.company)
           .join('circle')
-          .filter(d => d.year == 2020)
-          .attr('cx', d => x(d.cov))
-          .attr('cy', d => y(d.a2e))
+          .attr('cx', d => x(`${'d.cov_' + yr}`))
+          .attr('cy', d => x(`${'d.a2e_' + yr}`))
           .attr('r', 3)
+
+          test = `${'d.cov_' + yr}`
+          console.log(test)
+        }
+
+      d3.select('#dropdown')
+      .on('change', function(e){
+        update(this.value)
+      })
+
+      update(2019)
     }
     
     draw()
