@@ -5,16 +5,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="../d3-7.6.1.js"></script>
+  <style>
+    #element_letter {
+      font-size: 20px;
+    }
+  </style>
   <title>Document</title>
 </head>
 <body>
+  <div id="element_letter" font-size="30">The selected element's id is</div>
+  <br>
   <svg width="500" height="500"></svg>
   <script>
 
     data = ['a', 'b', 'c', 'd']
 
   // define a global variable to hold the 'this' value
-  sx = 'b'
+  letter = ''
+  div_selection = d3.select('#element_letter')
+  circle_selection = d3.select('#circle_group')
+        .selectAll(`${'#' + letter}`)
 
   // rects
   d3.select('svg')
@@ -29,23 +39,29 @@
       .attr('width', 50)
       .attr('height', 50)
       .on('mouseenter', function(e) {
+        // rect
         d3.select(this)
         .attr('fill', 'green');
 
-        sx = this.id
-        console.log('this value: ' + sx)
+        letter = this.id
         
+        // circles
         d3.select('#circle_group')
-        .selectAll(`${'#' + this.id}`)
+        .selectAll(`${'#' + letter}`)
         .attr('fill', 'green')
         
+        // div text
+        div_selection
+          .text("The selected element's id is " + letter)
       })
       .on('mouseleave', function(e) {
+        // rects
         d3.select(this)
         .attr('fill', 'black')
 
+        // circles
         d3.select('#circle_group')
-        .selectAll(`${'#' + this.id}`)
+        .selectAll(`${'#' + letter}`)
         .attr('fill', 'black')
       })
 
@@ -62,10 +78,6 @@
       .attr('cy', (d, i) => i * 100)
       .attr('r', 25)
 
-    // div to show the variable value
-    d3.select('body')
-      .append('div')
-      .text(sx)
   </script>
 </body>
 </html>
