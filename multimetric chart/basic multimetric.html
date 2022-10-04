@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <title>Basic multimetric</title>
+</head>
+<body>
+  <div>This chart uses the D3 Gallery basic parallel coordinates as its template</div>
+  <br>
+  <div id="my_dataviz"></div>
+  <script>
+
+    // set the dimensions and margins of the graph
+    const margin = {top: 30, right: 10, bottom: 10, left: 100},
+      width = 800 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
+    
+    // append the svg object to the body of the page
+    const svg = d3.select("#my_dataviz")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            `translate(${margin.left},${margin.top})`);
+    
+    // Parse the Data
+    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv").then( function(data) {
+    
+      // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
+      dimensions = Object.keys(data[0]).filter(function(d) { return d != "Species" })
+    
+      // Build a linear scale for each dimension and store them in an object
+      const x = {}
+      for (i in dimensions) {
+        name = dimensions[i]
+        x[name] = d3.scaleLinear()
+          .domain( d3.extent(data, function(d) { return +d[name]; }) )
+          .range([width, 0])
+      }
+    
+      // Build the X scale -> it find the best position for each Y axis
+      y = d3.scalePoint()
+        .range([0, height])
+        .padding(1)
+        .domain(dimensions);
+    
+      // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
+      function path(d) {
+          return d3.line().curve(d3['curveBasis'])(dimensions.map((p) => [x[p](d[p]), y(p)]))
+      }
+    
+      // Draw the lines
+      svg
+        .selectAll("myPath")
+        .data(data)
+        .join("path")
+        .attr("d",  path)
+        .style("fill", "none")
+        .style("stroke", "grey")
+        .style("opacity", 0.2)
+        .on('mouseenter', function (e, d) {
+          d3.select(this)
+          .style('opacity', 1)
+        })
+        .on('mouseleave', function (e, d) {
+          d3.select(this)
+          .style('opacity', 0.2)
+        })
+    
+      // Draw the axes
+      svg.selectAll("myAxis")
+        // For each dimension of the dataset I add a 'g' element:
+        .data(dimensions)
+        .enter()
+        .append("g")
+        // I translate this element to its right position on the y axis
+        .attr("transform", function(d) { return "translate(0, " + y(d) + ")"; })
+        // And I build the axis with the call function
+        .each(function(d) { d3.select(this).call(d3.axisTop().scale(x[d])); })
+        // Add axis title
+        .append("text")
+          .style("text-anchor", "middle")
+          .attr("x", -40)
+          .attr("y", 0)
+          .text(function(d) { return d; })
+          .style("fill", "black")
+    
+    })
+    </script>
+</body>
+</html>
