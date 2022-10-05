@@ -28,7 +28,16 @@
             `translate(${margin.left},${margin.top})`);
     
     // Parse the Data
-    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv").then( function(data) {
+    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv",
+      function(d) {
+        return {
+          Species: d.Species,
+          Sepal_Length: +d.Sepal_Length,
+          Sepal_Width: +d.Sepal_Width,
+          Petal_Length: +d.Petal_Length,
+          Petal_Width: +d.Petal_Width
+        }
+      }).then( function(data) {
     
       // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
       dimensions = Object.keys(data[0]).filter(function(d) { return d != "Species" })
@@ -39,7 +48,7 @@
         name = dimensions[i]
         x[name] = d3.scaleLinear()
           .domain( d3.extent(data, function(d) { return +d[name]; }) )
-          .range([width, 0])
+          .range([0, width])
       }
     
       // Build the X scale -> it find the best position for each Y axis
@@ -50,8 +59,9 @@
     
       // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
       function path(d) {
-          return d3.line().curve(d3['curveBasis'])(dimensions.map((p) => [x[p](d[p]), y(p)]))
+          return d3.line().curve(d3['curveBasis'])(dimensions.map(dim => [x[dim](d[dim]), y(dim)]))
       }
+      
     
       // Draw the lines
       svg
@@ -88,6 +98,25 @@
           .attr("y", 0)
           .text(function(d) { return d; })
           .style("fill", "black")
+
+        // Draw the circles
+        svg.selectAll("myAxis")
+        // For each column add a 'g' element:
+        .data(dimensions)
+        .enter()
+        .append("g")
+        .attr("transform", d => "translate(0, " + y(d) + ")")
+        .each(function(col) {     // for each of the four columns
+          console.log(y(col))
+        
+          d3.select(this)         // select the g element
+          .selectAll('circles')   // create an enter selection
+          .data(data)             // bind the data
+          .join('circle')         // join the enter selection to circle elements
+          .attr('cx', d => x[col](d[col])) // !!! no cx value is passed to the elements
+          .attr('cy', 0)
+          .attr('r', 5)
+          })
     
     })
     </script>
