@@ -53,7 +53,7 @@
       .attr('cy', d => y(yAccessor(d)))
       .attr('r', 5)
       .attr('fill', 'grey')
-      .on('mouseenter', function(event, datum) {
+      .on('mouseenter', function(e, d) {
         d3.select(this)
           .attr('r', 10)
           .attr('fill', 'orange')
